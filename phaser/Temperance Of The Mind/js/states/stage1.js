@@ -3,6 +3,10 @@
 var Stage1 = function(game) {};
 Stage1.prototype = {
 	create: function() {
+		// Initialize variables
+		playerHealth = 5;
+		this.enemyHealth = 15;
+
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -15,13 +19,22 @@ Stage1.prototype = {
 		player.scale.x = (-0.2);
 		player.destroyed = false;
 
+		this.enemy = game.add.sprite(70, game.world.centerY,'meandog');
+		this.enemy.anchor.set(0.5);
+		this.enemy.scale.setTo(0.2);
+		this.enemy.scale.x = (-0.2);
+
 		// apply physics to game stuff
 		game.physics.enable(player, Phaser.Physics.ARCADE);
+		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 		//player.body.maxVelocity.set(500);
 		//player.body.drag.set(200);
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
 		player.body.bounce.y = 0.2;
+		this.enemy.body.collideWorldBounds = true;
+		this.enemy.body.gravity.y = 1000;
+		this.enemy.body.bounce.y = 0.2;
 		//player.body.immovable = true;
 
 		// add player animations
@@ -35,10 +48,13 @@ Stage1.prototype = {
 		var ground = platforms.create(0,game.world.height - 64, 'ground');
 		ground.scale.setTo(3, 2); // Resize scale to fit the width of the game
 		ground.body.immovable = true; // Makes the ground not fall when you jump on it
+	
+		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
 	},
 	update: function() {
 		// Make player collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
+		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
 
 		// plays walk animation
 		player.animations.play('walk');

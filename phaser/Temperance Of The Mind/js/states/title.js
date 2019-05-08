@@ -17,7 +17,7 @@ Title.prototype = {
 	update: function() {
 		// check for SPACEBAR input
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
-			game.state.start('Play');
+			game.state.start('Stage1');
 		}
 	}
 };
