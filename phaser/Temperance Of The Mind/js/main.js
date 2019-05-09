@@ -13,7 +13,7 @@ var playerHealth;
 var healthText;
 var enemy;
 var enemyHealth;
-
+var enemySpeed; 
 window.onload = function() {
 
 	// initialize game

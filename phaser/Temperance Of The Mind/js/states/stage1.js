@@ -6,11 +6,24 @@ Stage1.prototype = {
 		// Initialize variables
 		playerHealth = 5;
 		this.enemyHealth = 15;
-
+		enemySpeed = -200;
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
-		// initialize assets/sprites
+		bounds = game.add.group();
+		bounds.enableBody = true;
+		var left = bounds.create(200,600,'ground');
+		left.anchor.set(0.5);
+		left.scale.setTo(1,1);
+		//left.angle = 90;
+		left.alpha = 1;
+		left.body.immovable = true;
+		var right = bounds.create(1250,600,'ground');
+		right.anchor.set(0.5);
+		//right.angle = 90;
+		right.scale.setTo(1,1);
+		right.alpha = 1;
+		right.body.immovable = true;
 
 		// initialize player sprite
 		player = game.add.sprite(70, game.world.centerY,'jax','f01');
@@ -19,7 +32,7 @@ Stage1.prototype = {
 		player.scale.x = (-0.2);
 		player.destroyed = false;
 
-		this.enemy = game.add.sprite(70, game.world.centerY,'meandog');
+		this.enemy = game.add.sprite(900, 550,'meandog');
 		this.enemy.anchor.set(0.5);
 		this.enemy.scale.setTo(0.2);
 		this.enemy.scale.x = (-0.2);
@@ -35,6 +48,7 @@ Stage1.prototype = {
 		this.enemy.body.collideWorldBounds = true;
 		this.enemy.body.gravity.y = 1000;
 		this.enemy.body.bounce.y = 0.2;
+		this.enemy.body.velocity.x = enemySpeed;
 		//player.body.immovable = true;
 
 		// add player animations
@@ -55,6 +69,9 @@ Stage1.prototype = {
 		// Make player collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
+		if(game.physics.arcade.collide(bounds, this.enemy)){
+			this.flipEnemy(this.enemy);
+		}
 
 		// plays walk animation
 		player.animations.play('walk');
@@ -62,11 +79,11 @@ Stage1.prototype = {
 		player.body.velocity.x = 0;
 		// check for player input
 		if(cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
-			player.body.velocity.x = -150;
+			player.body.velocity.x = -250;
 			//player.animations.play('left');
 		}
 		else if(cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
-			player.body.velocity.x = 150;
+			player.body.velocity.x = 250;
 			//player.animations.play('right');
 		}
 		else{ // Stops animation if player is not moving
@@ -76,5 +93,9 @@ Stage1.prototype = {
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
 			player.body.velocity.y = -750;
 		}
+	},
+	flipEnemy: function(enemy) {
+		enemySpeed = enemySpeed * -1;
+		enemy.body.velocity.x = enemySpeed;
 	}
 };
