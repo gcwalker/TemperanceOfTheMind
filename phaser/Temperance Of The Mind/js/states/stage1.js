@@ -38,6 +38,8 @@ Stage1.prototype = {
 		player.destroyed = false;
 
 		this.enemy = game.add.sprite(900, 550,'meandog');
+		enemy = enemies.create(200,200, 'meandog');
+		enemy.animations.add('idle', [0,1], 10, true);
 		this.enemy.anchor.set(0.5);
 		this.enemy.scale.setTo(0.2);
 		this.enemy.scale.x = (-0.2);
@@ -71,6 +73,13 @@ Stage1.prototype = {
 		var platform1 = platforms.create(300, 400, 'platform01');
 		platform1.body.immovable = true;
 		platform1.scale.setTo(2, 2);
+		
+		platform1 = platforms.create(-150, 200, 'ground01');
+		platform1.body.immovable = true;
+		
+		platoform1 = platofrms.creare(-200, 600, 'ground01');
+		platforms1.body.immovable = true;
+		
 
 		// TEMP health text at top left of camera
 		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
