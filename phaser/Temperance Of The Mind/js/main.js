@@ -1,5 +1,5 @@
 // NAMES
-// Temperance of the Mind
+// Temperance Of The Mind
 
 // be STRICT
 "use strict";
@@ -9,7 +9,11 @@
 var game;
 var player;
 var platforms;
- 
+var playerHealth;
+var healthText;
+var enemy;
+var enemyHealth;
+var enemySpeed; 
 window.onload = function() {
 
 	// initialize game
@@ -18,19 +22,8 @@ window.onload = function() {
 	// define states
 	game.state.add('Load',Load);
 	game.state.add('Title',Title);
-	game.state.add('Play',Play);
+	game.state.add('Stage1',Stage1);
 	game.state.add('GameOver',GameOver);
 	game.state.start('Load');
 
 }
-
-var Load = function(game) {}
-	preload: function(){ //preload assets 
-		game.load.image('grassyground', 'assets/img/grassyground.png');
-		game.load.image('shydude', 'assets/img.shydude.png');
-		
-		console.log("Load: preload");
-		
-	}
-		
-	
