@@ -1,5 +1,5 @@
 // NAMES
-// I forgot the title of the game
+// Temperance of the Mind
 
 // be STRICT
 "use strict";
@@ -23,3 +23,14 @@ window.onload = function() {
 	game.state.start('Load');
 
 }
+
+var Load = function(game) {}
+	preload: function(){ //preload assets 
+		game.load.image('grassyground', 'assets/img/grassyground.png');
+		game.load.image('shydude', 'assets/img.shydude.png');
+		
+		console.log("Load: preload");
+		
+	}
+		
+	
