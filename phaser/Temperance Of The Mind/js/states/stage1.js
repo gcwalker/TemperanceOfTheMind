@@ -12,16 +12,16 @@ Stage1.prototype = {
 
 		bounds = game.add.group();
 		bounds.enableBody = true;
-		var left = bounds.create(200,600,'ground');
+		var left = bounds.create(200,600,'bound');
 		left.anchor.set(0.5);
-		left.scale.setTo(1,1);
+		left.scale.setTo(0.2,0.2);
 		//left.angle = 90;
 		left.alpha = 1;
 		left.body.immovable = true;
-		var right = bounds.create(1250,600,'ground');
+		var right = bounds.create(1050,600,'bound');
 		right.anchor.set(0.5);
 		//right.angle = 90;
-		right.scale.setTo(1,1);
+		right.scale.setTo(0.2,0.2);
 		right.alpha = 1;
 		right.body.immovable = true;
 
@@ -59,10 +59,14 @@ Stage1.prototype = {
 		platforms = game.add.group();
 		platforms.enableBody = true; // enable physics for platform group
 
-		var ground = platforms.create(0,game.world.height - 64, 'ground');
+		var ground = platforms.create(0,game.world.height - 64, 'ground01');
 		ground.scale.setTo(3, 2); // Resize scale to fit the width of the game
 		ground.body.immovable = true; // Makes the ground not fall when you jump on it
-	
+		
+		var platform1 = platforms.create(300, 400, 'platform01');
+		platform1.body.immovable = true;
+		platform1.scale.setTo(2, 2);
+
 		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
 	},
 	update: function() {
