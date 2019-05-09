@@ -8,7 +8,9 @@ Stage1.prototype = {
 		this.enemyHealth = 15;
 		enemySpeed = -200;
 
-		this.bg = game.add.tileSprite(0,0,game.width,game.height,'background01');
+		// Add stage background
+		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
+		game.world.setBounds(0,0,2000,700);
 
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -70,7 +72,10 @@ Stage1.prototype = {
 		platform1.body.immovable = true;
 		platform1.scale.setTo(2, 2);
 
+		// TEMP health text at top left of camera
 		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
+
+		game.camera.follow(player,1);
 	},
 	update: function() {
 		// Make player collide with platforms
