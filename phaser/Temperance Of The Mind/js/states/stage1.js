@@ -7,6 +7,9 @@ Stage1.prototype = {
 		playerHealth = 5;
 		this.enemyHealth = 15;
 		enemySpeed = -200;
+
+		this.bg = game.add.tileSprite(0,0,game.width,game.height,'background01');
+
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
