@@ -1,4 +1,5 @@
-// NAMES
+// 120 Fight Club
+// Elijah Shaw, Erin Asilo, Gasing Kuang, Grace Walker
 // Temperance Of The Mind
 
 // be STRICT
