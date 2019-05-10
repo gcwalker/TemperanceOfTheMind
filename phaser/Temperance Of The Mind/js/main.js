@@ -1,6 +1,7 @@
 // 120 Fight Club
 // Elijah Shaw, Erin Asilo, Gasing Kuang, Grace Walker
 // Temperance Of The Mind
+// https://github.com/gcwalker/TemperanceOfTheMind.git
 
 // be STRICT
 "use strict";
