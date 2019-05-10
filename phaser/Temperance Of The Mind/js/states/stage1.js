@@ -72,11 +72,11 @@ Stage1.prototype = {
 		platform1.body.immovable = true;
 		platform1.scale.setTo(2, 2);
 
-		var platform2 = platforms.create(-150, 200, 'platform01');
+		var platform2 = platforms.create(1000, 200, 'platform01');
 		platform2.body.immovable = true;
 		platform2.scale.setTo(2, 2);
 
-		var platform3 = platforms.create(-200, 600, 'platform01');
+		var platform3 = platforms.create(700, 300, 'platform01');
 		platform3.body.immovable = true;
 		platform3.scale.setTo(2, 2);
 
