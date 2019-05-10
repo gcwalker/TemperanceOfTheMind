@@ -17,6 +17,7 @@ Title.prototype = {
 	update: function() {
 		// check for SPACEBAR input
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
+			game.sound.play('menusound');
 			game.state.start('Stage1');
 		}
 	}
