@@ -31,10 +31,10 @@ Stage1.prototype = {
 		right.body.immovable = true;
 
 		// initialize player sprite
-		player = game.add.sprite(70, game.world.centerY,'jax','f01');
+		player = game.add.sprite(70, game.world.centerY,'player');
 		player.anchor.set(0.5);
-		player.scale.setTo(0.2);
-		player.scale.x = (-0.2);
+		player.scale.setTo(1.5);
+		//player.scale.x = (-0.2);
 		player.destroyed = false;
 
 		this.enemy = game.add.sprite(900, 550,'meandog');
@@ -50,6 +50,7 @@ Stage1.prototype = {
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
 		player.body.bounce.y = 0.2;
+		//player.body.setSize(50,50,100,100);
 		this.enemy.body.collideWorldBounds = true;
 		this.enemy.body.gravity.y = 1000;
 		this.enemy.body.bounce.y = 0.2;
@@ -57,7 +58,12 @@ Stage1.prototype = {
 		//player.body.immovable = true;
 
 		// add player animations
-		player.animations.add('walk', Phaser.Animation.generateFrameNames('f', 1, 25, '', 2), 30, true);
+		player.animations.add('right',[1,2,3,4],6,true);
+		player.animations.add('left',[5,6,7,8],6,true);
+		player.animations.add('standingleft',[9],6,true);
+		player.animations.add('standingright',[0],6,true);
+		this.facingRight = true;
+
 		cursors = game.input.keyboard.createCursorKeys(); 
 
 		// add platforms
@@ -94,25 +100,34 @@ Stage1.prototype = {
 		}
 
 		// plays walk animation
-		player.animations.play('walk');
 
 		player.body.velocity.x = 0;
 		// check for player input
 		if(cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
 			player.body.velocity.x = -250;
+			player.animations.play('left');
+			this.facingRight = false;
 			//player.animations.play('left');
 		}
 		else if(cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
 			player.body.velocity.x = 250;
-			//player.animations.play('right');
+			player.animations.play('right');
+			this.facingRight = true;
 		}
 		else{ // Stops animation if player is not moving
 			player.animations.stop(); 
-			//player.frame = 4;
+			if(this.facingRight == true)
+				player.frame = 0;
+			if(this.facingRight == false)
+				player.frame = 9;
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
 			player.body.velocity.y = -750;
 		}
+	},
+	render: function() {
+		//game.debug.spriteBounds(player);
+		//game.debug.spriteCorners(player, true,true);
 	},
 	flipEnemy: function(enemy) {
 		enemySpeed = enemySpeed * -1;
