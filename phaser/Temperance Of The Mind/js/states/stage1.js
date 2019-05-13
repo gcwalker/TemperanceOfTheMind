@@ -12,6 +12,11 @@ Stage1.prototype = {
 		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
 		game.world.setBounds(0,0,2000,700);
 
+		// Stage music
+		music = game.add.audio('stage1');
+		music.play();
+		music.loopFull(0.3);
+
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
