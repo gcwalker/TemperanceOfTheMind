@@ -93,7 +93,7 @@ Stage1.prototype = {
 
 		// TEMP health text at top left of camera
 		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
-
+		healthText.fixedToCamera = true;
 		game.camera.follow(player,1);
 	},
 	update: function() {
