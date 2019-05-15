@@ -4,6 +4,7 @@ var Stage1 = function(game) {};
 Stage1.prototype = {
 	create: function() {
 		// Initialize variables
+		inputEnabled = true;
 		playerHealth = 5;
 		this.enemyHealth = 15;
 		enemySpeed = -200;
@@ -106,21 +107,31 @@ Stage1.prototype = {
 
 		// plays walk animation
 
-		player.body.velocity.x = 0;
 		// check for player input
-		if(cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
+		if(game.physics.arcade.overlap(player, this.enemy)){
+			//if(this.enemy.body.velocity < 0);
+			//player.body.velocity.x = -1500;
+			inputEnabled = false;
+			player.body.velocity.y = -400;
+			this.flipEnemy(this.enemy); 
+			this.timer = game.time.create(1000,true);
+			this.timer.add(500, this.disableInput, this);
+			this.timer.start();
+		}
+		else if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
 			player.body.velocity.x = -250;
 			player.animations.play('left');
 			this.facingRight = false;
 			//player.animations.play('left');
 		}
-		else if(cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
+		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
 			player.body.velocity.x = 250;
 			player.animations.play('right');
 			this.facingRight = true;
 		}
 		else{ // Stops animation if player is not moving
 			player.animations.stop(); 
+			player.body.velocity.x = 0;
 			if(this.facingRight == true)
 				player.frame = 0;
 			if(this.facingRight == false)
@@ -137,5 +148,8 @@ Stage1.prototype = {
 	flipEnemy: function(enemy) {
 		enemySpeed = enemySpeed * -1;
 		enemy.body.velocity.x = enemySpeed;
+	},
+	disableInput: function() {
+		inputEnabled = true;
 	}
 };

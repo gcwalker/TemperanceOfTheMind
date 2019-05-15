@@ -16,6 +16,8 @@ var healthText;
 var enemy;
 var enemyHealth;
 var enemySpeed; 
+var inputEnabled;
+
 window.onload = function() {
 
 	// initialize game
