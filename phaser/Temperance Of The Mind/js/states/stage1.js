@@ -9,6 +9,8 @@ Stage1.prototype = {
 		this.enemyHealth = 15;
 		enemySpeed = -200;
 		enemyImmune = false;
+		swordEquipped = false;
+
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
 		game.world.setBounds(0,0,2000,700);
@@ -121,6 +123,11 @@ Stage1.prototype = {
 
 		// Knockback player if they touch the boss
 		if(game.physics.arcade.overlap(player, this.enemy) && enemyImmune == false){
+			--playerHealth;
+			if(playerHealth == 0){
+				game.state.start('GameOver');
+			}
+			healthText.text = 'Health: ' + playerHealth;
 			inputEnabled = false;
 			enemyImmune = true;
 			player.body.velocity.y = -400;
