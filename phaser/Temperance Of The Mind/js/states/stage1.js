@@ -113,6 +113,7 @@ Stage1.prototype = {
 			//player.body.velocity.x = -1500;
 			inputEnabled = false;
 			player.body.velocity.y = -400;
+			player.body.velocity.x = (-1 * player.body.velocity.x);
 			this.flipEnemy(this.enemy); 
 			this.timer = game.time.create(1000,true);
 			this.timer.add(500, this.disableInput, this);
