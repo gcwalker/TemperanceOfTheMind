@@ -125,6 +125,7 @@ Stage1.prototype = {
 		if(game.physics.arcade.overlap(player, this.enemy) && enemyImmune == false){
 			--playerHealth;
 			if(playerHealth == 0){
+				music.stop();
 				game.state.start('GameOver');
 			}
 			healthText.text = 'Health: ' + playerHealth;
