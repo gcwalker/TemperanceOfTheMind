@@ -16,6 +16,7 @@ var healthText;
 var enemy;
 var enemyHealth;
 var enemySpeed; 
+var enemyImmune;
 var inputEnabled;
 var swordEquipped = false;
 

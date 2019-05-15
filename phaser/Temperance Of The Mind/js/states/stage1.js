@@ -8,7 +8,7 @@ Stage1.prototype = {
 		playerHealth = 5;
 		this.enemyHealth = 15;
 		enemySpeed = -200;
-
+		enemyImmune = false;
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
 		game.world.setBounds(0,0,2000,700);
@@ -120,13 +120,15 @@ Stage1.prototype = {
 		}
 
 		// Knockback player if they touch the boss
-		if(game.physics.arcade.overlap(player, this.enemy)){
+		if(game.physics.arcade.overlap(player, this.enemy) && enemyImmune == false){
 			inputEnabled = false;
+			enemyImmune = true;
 			player.body.velocity.y = -400;
 			player.body.velocity.x = (-1 * player.body.velocity.x);
 			this.flipEnemy(this.enemy); 
 			this.timer = game.time.create(1000,true);
-			this.timer.add(500, this.disableInput, this);
+			this.timer.add(250, this.disableInput, this);
+			this.timer.add(2000, this.enemyImmunity, this);
 			this.timer.start();
 		} // check for player input
 		else if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
@@ -162,5 +164,8 @@ Stage1.prototype = {
 	},
 	disableInput: function() {
 		inputEnabled = true;
+	},
+	enemyImmunity: function() {
+		enemyImmune = false;
 	}
 };
