@@ -17,6 +17,7 @@ var enemy;
 var enemyHealth;
 var enemySpeed; 
 var inputEnabled;
+var swordEquipped = false;
 
 window.onload = function() {
 

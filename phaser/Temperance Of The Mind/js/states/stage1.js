@@ -96,6 +96,12 @@ Stage1.prototype = {
 		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
 		healthText.fixedToCamera = true;
 		game.camera.follow(player,1);
+
+		// Adds sword to game world
+		this.sworditem = game.add.sprite(800,250,'sword');
+		this.sworditem.scale.setTo(0.45);
+		game.physics.enable(this.sworditem, Phaser.Physics.ARCADE);
+
 	},
 	update: function() {
 		// Make player collide with platforms
@@ -105,12 +111,16 @@ Stage1.prototype = {
 			this.flipEnemy(this.enemy);
 		}
 
-		// plays walk animation
+		// Player pickup sword
+		if(game.physics.arcade.overlap(player, this.sworditem)){
+			swordEquipped = true;
+			this.sworditem.x = 1020;
+			this.sworditem.y = 20;
+			this.sworditem.fixedToCamera = true;
+		}
 
-		// check for player input
+		// Knockback player if they touch the boss
 		if(game.physics.arcade.overlap(player, this.enemy)){
-			//if(this.enemy.body.velocity < 0);
-			//player.body.velocity.x = -1500;
 			inputEnabled = false;
 			player.body.velocity.y = -400;
 			player.body.velocity.x = (-1 * player.body.velocity.x);
@@ -118,7 +128,7 @@ Stage1.prototype = {
 			this.timer = game.time.create(1000,true);
 			this.timer.add(500, this.disableInput, this);
 			this.timer.start();
-		}
+		} // check for player input
 		else if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
 			player.body.velocity.x = -250;
 			player.animations.play('left');
@@ -143,7 +153,7 @@ Stage1.prototype = {
 		}
 	},
 	render: function() {
-		//game.debug.spriteBounds(player);
+		game.debug.spriteBounds(player);
 		//game.debug.spriteCorners(player, true,true);
 	},
 	flipEnemy: function(enemy) {
