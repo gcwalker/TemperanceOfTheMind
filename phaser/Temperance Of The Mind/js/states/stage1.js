@@ -50,6 +50,9 @@ Stage1.prototype = {
 		this.enemy.scale.setTo(0.2);
 		this.enemy.scale.x = (-0.2);
 
+		this.slashHitbox = game.add.sprite(0,0,'shield');
+		this.slashHitbox.anchor.set(0.5);
+		this.slashHitbox.scale.setTo(1, 0.5);
 		// apply physics to game stuff
 		game.physics.enable(player, Phaser.Physics.ARCADE);
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
@@ -161,6 +164,24 @@ Stage1.prototype = {
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
 			player.body.velocity.y = -750;
 		}
+		if(inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
+			inputEnabled = false;
+			enemyImmune = true;
+			this.timer = game.time.create(1000,true);
+			this.timer.add(250, this.disableInput, this);
+			this.timer.add(2000, this.enemyImmunity, this);
+			this.timer.add(250,this.moveHitbox,this);
+			this.timer.start();
+			if(this.facingRight == true){
+				this.slashHitbox.x = player.x + 25;
+				this.slashHitbox.y = player.y;
+			}
+			if(this.facingRight == false){
+				this.slashHitbox.x = player.x - 25;
+				this.slashHitbox.y = player.y;
+			}
+		}
+		
 	},
 	render: function() {
 		game.debug.spriteBounds(player);
@@ -175,5 +196,9 @@ Stage1.prototype = {
 	},
 	enemyImmunity: function() {
 		enemyImmune = false;
+	},
+	moveHitbox: function() {
+		this.slashHitbox.x = 0;
+		this.slashHitbox.y = 0;
 	}
 };
