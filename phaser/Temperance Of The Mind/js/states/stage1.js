@@ -23,17 +23,18 @@ Stage1.prototype = {
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
+		// Bounds to make boss move left and right
 		bounds = game.add.group();
 		bounds.enableBody = true;
+
 		var left = bounds.create(200,600,'bound');
 		left.anchor.set(0.5);
 		left.scale.setTo(0.2,0.2);
-		//left.angle = 90;
 		left.alpha = 1;
 		left.body.immovable = true;
+
 		var right = bounds.create(1050,600,'bound');
 		right.anchor.set(0.5);
-		//right.angle = 90;
 		right.scale.setTo(0.2,0.2);
 		right.alpha = 1;
 		right.body.immovable = true;
@@ -108,14 +109,25 @@ Stage1.prototype = {
 		this.sworditem.scale.setTo(0.45);
 		game.physics.enable(this.sworditem, Phaser.Physics.ARCADE);
 
+		// Add boss fireballs
+		this.fireballs = game.add.emitter(0,0,500);
+		this.fireballs.makeParticles('fireball');
+		this.fireballs.setYSpeed(-350,-150);
+		this.fireballs.setXSpeed(-150,150);
+		this.fireballs.start(false,10000,1500,1000);
+
 	},
 	update: function() {
+
 		// Make player collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
 		if(game.physics.arcade.collide(bounds, this.enemy)){
 			this.flipEnemy(this.enemy);
 		}
+
+		this.fireballs.x = this.enemy.x;
+		this.fireballs.y = this.enemy.y;
 
 		// Player pickup sword
 		if(game.physics.arcade.overlap(player, this.sworditem)){
@@ -184,7 +196,7 @@ Stage1.prototype = {
 		}
 		if(game.physics.arcade.overlap(this.slashHitbox,this.enemy) && enemyImmune == false){
 			--this.enemyHealth;
-			this.enemy.body.velocity.y = -400;
+			this.enemy.body.velocity.y = -200;
 			enemyImmune = true;
 			this.timer = game.time.create(1000,true);
 			this.timer.add(2000, this.enemyImmunity, this);
