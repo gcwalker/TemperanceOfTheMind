@@ -10,7 +10,6 @@ Stage1.prototype = {
 		enemySpeed = -200;
 		enemyImmune = false;
 		swordEquipped = false;
-
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
 		game.world.setBounds(0,0,2000,700);
@@ -33,7 +32,7 @@ Stage1.prototype = {
 		left.alpha = 1;
 		left.body.immovable = true;
 
-		var right = bounds.create(1050,600,'bound');
+		var right = bounds.create(1700,600,'bound');
 		right.anchor.set(0.5);
 		right.scale.setTo(0.2,0.2);
 		right.alpha = 1;
@@ -114,8 +113,12 @@ Stage1.prototype = {
 		this.fireballs.makeParticles('fireball');
 		this.fireballs.setYSpeed(-350,-150);
 		this.fireballs.setXSpeed(-150,150);
-		this.fireballs.start(false,10000,1500,1000);
+		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
+		this.fireballs.start(false,10000,1000,300);
 
+		this.heart = game.add.sprite(0,0,'heart');
+		this.heart.anchor.set(0.5);
+		this.heart.scale.set(0.5);
 	},
 	update: function() {
 
@@ -186,7 +189,7 @@ Stage1.prototype = {
 			this.timer.add(300,this.moveHitbox,this);
 			this.timer.start();
 			if(this.facingRight == true){
-				this.slashHitbox.x = player.x + 25;
+				this.slashHitbox.x = player.x + 10;
 				this.slashHitbox.y = player.y;
 			}
 			if(this.facingRight == false){
@@ -203,8 +206,13 @@ Stage1.prototype = {
 			this.timer.start();
 			this.flipEnemy(this.enemy);
 			console.log("Enemy hit!");
-			if(this.enemyHealth == 0)
+			if(this.enemyHealth == 0){
+				this.heart.x = this.enemy.x;
+				this.heart.y = this.enemy.y + 25;
 				this.enemy.kill();
+				this.fireballs.setXSpeed(-75,75);
+				this.fireballs.frequency = 0;
+			}
 		}
 		
 	},
