@@ -50,7 +50,7 @@ Stage1.prototype = {
 		this.enemy.scale.setTo(0.2);
 		this.enemy.scale.x = (-0.2);
 
-		this.slashHitbox = game.add.sprite(0,0,'shield');
+		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
 		this.slashHitbox.scale.setTo(1.2, 0.5);
 		// apply physics to game stuff
@@ -110,7 +110,7 @@ Stage1.prototype = {
 
 		// Add boss fireballs
 		this.fireballs = game.add.emitter(0,0,500);
-		this.fireballs.makeParticles('fireball');
+		this.fireballs.makeParticles('fireball',0,500,true,false);
 		this.fireballs.setYSpeed(-350,-150);
 		this.fireballs.setXSpeed(-150,150);
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
@@ -210,14 +210,14 @@ Stage1.prototype = {
 				this.heart.x = this.enemy.x;
 				this.heart.y = this.enemy.y + 25;
 				this.enemy.kill();
-				this.fireballs.setXSpeed(-75,75);
+				this.fireballs.setXSpeed(-95,95);
 				this.fireballs.frequency = 0;
 			}
 		}
 		
 	},
 	render: function() {
-		game.debug.spriteBounds(player);
+		//game.debug.spriteBounds(player);
 		//game.debug.spriteCorners(player, true,true);
 	},
 	flipEnemy: function(enemy) {
