@@ -77,7 +77,7 @@ Stage1.prototype = {
 		platform1 = platforms.create(-150, 200, 'ground01');
 		platform1.body.immovable = true;
 		
-		platoform1 = platofrms.create(-200, 600, 'ground01');
+		platoform1 = platforms.create(-200, 600, 'ground01');
 		platforms1.body.immovable = true;
 		
 		var platform2 = platforms.create(50, 300, 'ground01');
