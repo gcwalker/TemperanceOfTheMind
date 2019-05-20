@@ -19,6 +19,9 @@ Load.prototype = {
 		game.load.image('background01', 'assets/img/background01.png');
 		game.load.audio('menusound', 'assets/audio/menusound.mp3');
 		game.load.audio('stage1', 'assets/audio/bgmmain.mp3');
+		game.load.audio('slashmiss', 'assets/audio/slashmiss.mp3');
+		game.load.audio('slashhit', 'assets/audio/slashhit.mp3');
+		game.load.audio('fireball', 'assets/audio/fireball.mp3');
 	},
 	create: function() {
 		game.state.start('Title');
