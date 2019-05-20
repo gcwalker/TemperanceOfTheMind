@@ -7,6 +7,7 @@ Stage1.prototype = {
 		playerHealth = 5;
 		this.enemyHealth = 15;
 		enemySpeed = -200;
+		platformSpeed = -250;
 
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
@@ -89,6 +90,10 @@ Stage1.prototype = {
 		var platform2 = platforms.create(90, 500, 'ground01');
 		platform2.body.movable = true;
 		
+		this.platform2.body.collideWorldBounds = true;
+		this.platform2.body.gravity.y = 1000;
+		this.platform2.body.bounce.y = 0.2;
+		this.platform2.body.velocity.x = platformSpeed;
 		
 		
 		
