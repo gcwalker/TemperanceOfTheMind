@@ -6,7 +6,7 @@ var Load = function(game) {};
 Load.prototype = {
 	preload: function() {
 		// preload assets
-		game.load.image('meandog', 'assets/img/meandog.png');
+		game.load.spritesheet('boss1', 'assets/img/boss1.png',44,64);
 		game.load.spritesheet('player','assets/img/player.png',44,64);
 		game.load.spritesheet('playerSlash','assets/img/playerslash.png',44,64);
 		game.load.image('ground01', 'assets/img/ground01.png');

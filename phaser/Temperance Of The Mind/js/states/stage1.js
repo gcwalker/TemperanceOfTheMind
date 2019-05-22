@@ -41,16 +41,16 @@ Stage1.prototype = {
 		right.body.immovable = true;
 
 		// initialize player sprite
-		player = game.add.sprite(100, 580,'player');
+		player = game.add.sprite(100, 580 ,'player');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
 		//player.scale.x = (-0.2);
 		player.destroyed = false;
 
-		this.enemy = game.add.sprite(1000, 565,'meandog');
+		this.enemy = game.add.sprite(1000, 565,'boss1');
 		this.enemy.anchor.set(0.5);
-		this.enemy.scale.setTo(0.2);
-		this.enemy.scale.x = (-0.2);
+		this.enemy.scale.setTo(1.7);
+		//this.enemy.scale.x = (-0.2);
 
 		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
@@ -76,6 +76,9 @@ Stage1.prototype = {
 		player.animations.add('left',[5,6,7,8],6,true);
 		player.animations.add('standingleft',[9],6,true);
 		player.animations.add('standingright',[0],6,true);
+
+		this.enemy.animations.add('right',[1,2,3,4],6,true);
+		this.enemy.animations.add('left',[5,6,7,8],6,true);
 		//player.animations.add('slashRight')
 		this.facingRight = true;
 
@@ -179,6 +182,12 @@ Stage1.prototype = {
 		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
 		if(game.physics.arcade.collide(bounds, this.enemy)){
 			this.flipEnemy(this.enemy);
+		}
+		if(enemySpeed > 0){
+			this.enemy.animations.play('right');
+		}
+		else{
+			this.enemy.animations.play('left');
 		}
 		// if(game.physics.arcade.collide(bounds, platforms)){
 		// 	this.flipPlatform(platforms);
