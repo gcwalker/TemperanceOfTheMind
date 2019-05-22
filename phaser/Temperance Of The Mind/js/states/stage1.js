@@ -9,6 +9,7 @@ Stage1.prototype = {
 		this.enemyHealth = 3;
 		enemySpeed = -200;
 		enemyImmune = false;
+		playerImmune = false;
 		swordEquipped = false;
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,2000,game.height,'background01');
@@ -74,6 +75,7 @@ Stage1.prototype = {
 		player.animations.add('left',[5,6,7,8],6,true);
 		player.animations.add('standingleft',[9],6,true);
 		player.animations.add('standingright',[0],6,true);
+		//player.animations.add('slashRight')
 		this.facingRight = true;
 
 		cursors = game.input.keyboard.createCursorKeys(); 
@@ -111,8 +113,10 @@ Stage1.prototype = {
 		// Add boss fireballs
 		this.fireballs = game.add.emitter(0,0,500);
 		this.fireballs.makeParticles('fireball',0,500,true,false);
-		this.fireballs.setYSpeed(-350,-150);
+		this.fireballs.setYSpeed(-700,-400);
 		this.fireballs.setXSpeed(-150,150);
+		this.fireballs.setRotation(500,600);
+		this.fireballs.gravity = 500;
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
 		this.fireballs.start(false,10000,1000,300);
 
@@ -138,6 +142,23 @@ Stage1.prototype = {
 			this.sworditem.x = 1020;
 			this.sworditem.y = 20;
 			this.sworditem.fixedToCamera = true;
+		}
+
+		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
+			--playerHealth;
+			if(playerHealth == 0){
+				music.stop();
+				game.state.start('GameOver');
+			}
+			healthText.text = 'Health: ' + playerHealth;
+			playerImmune = true;
+			inputEnabled = false;
+			player.body.velocity.y = -400;
+			player.body.velocity.x = (-1 * player.body.velocity.x);
+			this.timer = game.time.create(1000,true);
+			this.timer.add(150, this.disableInput, this);
+			this.timer.add(1250, this.playerImmunity, this);
+			this.timer.start();	
 		}
 
 		// Knockback player if they touch the boss
@@ -229,6 +250,9 @@ Stage1.prototype = {
 	},
 	enemyImmunity: function() {
 		enemyImmune = false;
+	},
+	playerImmunity: function() {
+		playerImmune = false;
 	},
 	moveHitbox: function() {
 		this.slashHitbox.x = 0;

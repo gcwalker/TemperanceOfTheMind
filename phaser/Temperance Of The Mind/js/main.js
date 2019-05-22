@@ -19,6 +19,7 @@ var enemySpeed;
 var enemyImmune;
 var inputEnabled;
 var swordEquipped;
+var playerImmune;
 
 window.onload = function() {
 

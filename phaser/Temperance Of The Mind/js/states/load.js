@@ -8,6 +8,7 @@ Load.prototype = {
 		// preload assets
 		game.load.image('meandog', 'assets/img/meandog.png');
 		game.load.spritesheet('player','assets/img/player.png',44,64);
+		game.load.spritesheet('playerSlash','assets/img/playerslash.png',44,64);
 		game.load.image('ground01', 'assets/img/ground01.png');
 		game.load.image('bound', 'assets/img/bones.png');
 		game.load.image('sword', 'assets/img/sword.png');
