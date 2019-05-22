@@ -136,5 +136,13 @@ Stage1.prototype = {
 	flipEnemy: function(enemy) {
 		enemySpeed = enemySpeed * -1;
 		enemy.body.velocity.x = enemySpeed;
+	},
+	
+	flipPlatform: function(platform) {
+		platformSpeed = platformSpeed * -1;
+		platform.body.velocity.x = platformSpeed;
+		
 	}
+	
+	
 };
