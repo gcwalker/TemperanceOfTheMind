@@ -135,7 +135,7 @@ Stage1.prototype = {
 		platform5b.scale.setTo(2, 2);
 		var platform6b = platforms.create(1000, 1100, 'platform01');
 		platform6b.scale.setTo(2, 2);
-		var platform7b = platforms.create(1950, 1350, 'platform01');
+		var platform7b = platforms.create(1925, 1350, 'platform01');
 		platform7b.scale.setTo(2, 2);
 		var platform8b = platforms.create(500, 1300, 'platform01');
 		platform8b.scale.setTo(2, 2);
@@ -176,9 +176,10 @@ Stage1.prototype = {
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
 		this.fireballs.start(false,10000,800,300);
 
-		this.heart = game.add.sprite(0,0,'heart');
+		this.heart = game.add.sprite(-100,0,'heart');
 		this.heart.anchor.set(0.5);
 		this.heart.scale.set(0.5);
+		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
 	},
 	update: function() {
 
@@ -194,9 +195,10 @@ Stage1.prototype = {
 		else{
 			this.enemy.animations.play('left');
 		}
-		// if(game.physics.arcade.collide(bounds, platforms)){
-		// 	this.flipPlatform(platforms);
-		// }
+		if(game.physics.arcade.collide(this.heart,player)){
+			music.stop();
+			game.state.start('GameOver');
+		}
 		this.fireballs.x = this.enemy.x;
 		this.fireballs.y = this.enemy.y;
 
@@ -209,11 +211,13 @@ Stage1.prototype = {
 		}
 
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
+			fireball.play();
 			--playerHealth;
 			if(playerHealth == 0){
 				music.stop();
 				game.state.start('GameOver');
 			}
+
 			healthText.text = 'Health: ' + playerHealth;
 			playerImmune = true;
 			inputEnabled = false;

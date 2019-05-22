@@ -31,6 +31,7 @@ window.onload = function() {
 	game.state.add('Title',Title);
 	game.state.add('Stage1',Stage1);
 	game.state.add('GameOver',GameOver);
+	game.state.add('Win',Win);
 	game.state.start('Load');
 
 }
