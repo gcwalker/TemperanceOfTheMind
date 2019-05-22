@@ -46,7 +46,7 @@ Stage1.prototype = {
 		right.body.immovable = true;
 
 		// initialize player sprite
-		player = game.add.sprite(100, 580 ,'player');
+		player = game.add.sprite(100, 1000 ,'player');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
 		//player.scale.x = (-0.2);
@@ -166,6 +166,8 @@ Stage1.prototype = {
 		this.sworditem.scale.setTo(0.5);
 		game.physics.enable(this.sworditem, Phaser.Physics.ARCADE);
 
+		swordText = game.add.text(-10,16,'[SPACE]',{fontSize: '10px', fill:'#facade'});
+
 		// Add boss fireballs
 		this.fireballs = game.add.emitter(0,0,500);
 		this.fireballs.makeParticles('fireball',0,500,true,false);
@@ -208,6 +210,9 @@ Stage1.prototype = {
 			this.sworditem.x = 1020;
 			this.sworditem.y = 20;
 			this.sworditem.fixedToCamera = true;
+			swordText.x = 1029;
+			swordText.y = 79;
+			swordText.fixedToCamera = true;
 		}
 
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
