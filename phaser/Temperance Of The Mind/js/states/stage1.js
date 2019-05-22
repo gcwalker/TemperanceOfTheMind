@@ -21,6 +21,11 @@ Stage1.prototype = {
 		music.play();
 		music.loopFull(0.3);
 
+		// Stage Sound Effects
+		slashmiss = game.add.audio('slashmiss');
+		slashhit = game.add.audio('slashhit');
+		fireball = game.add.audio('fireball');
+
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -268,6 +273,7 @@ Stage1.prototype = {
 			this.timer.add(2000, this.enemyImmunity, this);
 			this.timer.add(300,this.moveHitbox,this);
 			this.timer.start();
+			slashmiss.play();
 			if(this.facingRight == true){
 				this.slashHitbox.x = player.x + 10;
 				this.slashHitbox.y = player.y;
@@ -284,6 +290,7 @@ Stage1.prototype = {
 			this.timer = game.time.create(1000,true);
 			this.timer.add(2000, this.enemyImmunity, this);
 			this.timer.start();
+			slashhit.play();
 			this.flipEnemy(this.enemy);
 			console.log("Enemy hit!");
 			if(this.enemyHealth == 0){
