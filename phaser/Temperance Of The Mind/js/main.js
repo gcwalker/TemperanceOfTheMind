@@ -20,7 +20,7 @@ var enemyImmune;
 var inputEnabled;
 var swordEquipped;
 var playerImmune;
-
+var platformSpeed;
 window.onload = function() {
 
 	// initialize game
