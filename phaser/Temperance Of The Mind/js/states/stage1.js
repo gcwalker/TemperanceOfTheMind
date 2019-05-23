@@ -346,8 +346,15 @@ Stage1.prototype = {
 		enemy.body.velocity.x = enemySpeed;
 	},
 	// flipPlatform: function(platforms) {
-	// 	enemySpeed = enemySpeed * -1; 
-	// 	platforms.body.velocity.x = enemySpeed;
+	// 	platformSpeed = platformSpeed * -1; 
+	// 	platforms.body.velocity.x = platformSpeed;
+	//      platform2t.body.velocity.x = platformSpeed;
+	//         platform3t.body.velocity.x = platformSpeed;
+	//       platform4t.body.velocity.x = platformSpeed;
+	//       platform5t.body.velocity.x = platformSpeed;
+	//      platform6t.body.velocity.x = platformSpeed;
+	//       platform7t.body.velocity.x = platformSpeed;
+	//       platform8t.body.velocity.x = platformSpeed;
 	// },
 	disableInput: function() {
 		inputEnabled = true;
