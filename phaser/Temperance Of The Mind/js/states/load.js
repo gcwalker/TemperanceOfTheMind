@@ -12,6 +12,7 @@ Load.prototype = {
 		game.load.atlas('player','assets/img/playerspritesheet.png','assets/img/player.json');
 		game.load.image('ground01', 'assets/img/ground01.png');
 		game.load.image('bound', 'assets/img/bones.png');
+		game.load.image('lava', 'assets/img/lava.png');
 		game.load.image('sword', 'assets/img/sword.png');
 		game.load.image('shield', 'assets/img/shield.png');
 		game.load.image('heart', 'assets/img/heart.png');

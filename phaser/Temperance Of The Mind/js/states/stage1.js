@@ -13,9 +13,11 @@ Stage1.prototype = {
 		playerImmune = false;
 		swordEquipped = false;
 		slashing = false;
+
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,4000,1400,'background01');
 		game.world.setBounds(0,0,4000,1400);
+
 
 		// Stage music
 		music = game.add.audio('stage1');
@@ -46,8 +48,10 @@ Stage1.prototype = {
 		right.alpha = 0;
 		right.body.immovable = true;
 
+		this.lava = game.add.tileSprite(0,1380,4000,1400,'lava');
+
 		// initialize player sprite
-		player = game.add.sprite(100, 965 ,'player', 'playerrun00');
+		player = game.add.sprite(100, 565 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
 		//player.scale.x = (-0.2);
@@ -66,6 +70,7 @@ Stage1.prototype = {
 		game.physics.enable(player, Phaser.Physics.ARCADE);
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 		game.physics.enable(this.slashHitbox, Phaser.Physics.ARCADE);
+		game.physics.enable(this.lava, Phaser.Physics.ARCADE);
 		//player.body.maxVelocity.set(500);
 		//player.body.drag.set(200);
 		player.body.collideWorldBounds = true;
@@ -81,8 +86,8 @@ Stage1.prototype = {
 		// add player animations
 		player.animations.add('right',[1,2,3,4],6,true);
 		player.animations.add('left',[5,6,7,8],6,true);
-		player.animations.add('slashright',[10,11,12],3,false);
-		player.animations.add('slashleft',[13,14,15],3,false);
+		player.animations.add('slashright',[10,11,12],6,false);
+		player.animations.add('slashleft',[13,14,15],6,false);
 		player.animations.add('standingleft',[9],6,true);
 		player.animations.add('standingright',[0],6,true);
 
@@ -203,6 +208,11 @@ Stage1.prototype = {
 		}
 		if(game.physics.arcade.collide(this.heart,player)){
 			music.stop();
+			game.state.start('Win');
+		}
+		if(game.physics.arcade.collide(this.lava,player)){
+			fireball.play();
+			music.stop();
 			game.state.start('GameOver');
 		}
 		this.fireballs.x = this.enemy.x;
@@ -298,12 +308,12 @@ Stage1.prototype = {
 			slashmiss.play();
 			if(this.facingRight == true){
 				player.animations.play('slashright');
-				this.slashHitbox.x = player.x + 10;
+				this.slashHitbox.x = player.x -50;
 				this.slashHitbox.y = player.y;
 			}
 			if(this.facingRight == false){
 				player.animations.play('slashleft');
-				this.slashHitbox.x = player.x - 125;
+				this.slashHitbox.x = player.x - 85;
 				this.slashHitbox.y = player.y;
 			}
 		}
@@ -321,7 +331,7 @@ Stage1.prototype = {
 				this.heart.x = this.enemy.x;
 				this.heart.y = this.enemy.y + 25;
 				this.enemy.kill();
-				this.fireballs.setXSpeed(-95,95);
+				this.fireballs.setXSpeed(-125,125);
 				this.fireballs.frequency = 0;
 			}
 		}
