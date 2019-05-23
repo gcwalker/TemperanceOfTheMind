@@ -21,6 +21,7 @@ var inputEnabled;
 var swordEquipped;
 var playerImmune;
 var platformSpeed;
+var slashing;
 window.onload = function() {
 
 	// initialize game

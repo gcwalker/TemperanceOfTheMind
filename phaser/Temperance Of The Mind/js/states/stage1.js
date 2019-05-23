@@ -12,6 +12,7 @@ Stage1.prototype = {
 		enemyImmune = false;
 		playerImmune = false;
 		swordEquipped = false;
+		slashing = false;
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,4000,1400,'background01');
 		game.world.setBounds(0,0,4000,1400);
@@ -46,7 +47,7 @@ Stage1.prototype = {
 		right.body.immovable = true;
 
 		// initialize player sprite
-		player = game.add.sprite(100, 1000 ,'player');
+		player = game.add.sprite(100, 965 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
 		//player.scale.x = (-0.2);
@@ -60,6 +61,7 @@ Stage1.prototype = {
 		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
 		this.slashHitbox.scale.setTo(1.2, 0.5);
+		this.slashHitbox.alpha = 0;
 		// apply physics to game stuff
 		game.physics.enable(player, Phaser.Physics.ARCADE);
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
@@ -79,6 +81,8 @@ Stage1.prototype = {
 		// add player animations
 		player.animations.add('right',[1,2,3,4],6,true);
 		player.animations.add('left',[5,6,7,8],6,true);
+		player.animations.add('slashright',[10,11,12],3,false);
+		player.animations.add('slashleft',[13,14,15],3,false);
 		player.animations.add('standingleft',[9],6,true);
 		player.animations.add('standingright',[0],6,true);
 
@@ -263,31 +267,42 @@ Stage1.prototype = {
 			player.animations.play('right');
 			this.facingRight = true;
 		}
-		else{ // Stops animation if player is not moving
-			player.animations.stop(); 
+		else if(player.animations.name == 'slashright' | player.animations.name == 'slashleft'){
 			player.body.velocity.x = 0;
-			if(this.facingRight == true)
-				player.frame = 0;
-			if(this.facingRight == false)
-				player.frame = 9;
+		}
+		else{ // Stops animation if player is not moving
+			//player.animations.stop();
+			player.body.velocity.x = 0;
+			if(this.facingRight == true){
+				player.animations.play('standingright');
+				//player.animations.stop();
+			}
+			if(this.facingRight == false){
+				player.animations.play('standingleft');
+				//player.animations.stop();
+			}
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
+			slashing = true;
 			inputEnabled = false;
 			//enemyImmune = true;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(300, this.disableInput, this);
+			this.timer.add(300, this.disableSlash, this);
+			this.timer.add(500, this.disableInput, this);
 			this.timer.add(2000, this.enemyImmunity, this);
 			this.timer.add(300,this.moveHitbox,this);
 			this.timer.start();
 			slashmiss.play();
 			if(this.facingRight == true){
+				player.animations.play('slashright');
 				this.slashHitbox.x = player.x + 10;
 				this.slashHitbox.y = player.y;
 			}
 			if(this.facingRight == false){
+				player.animations.play('slashleft');
 				this.slashHitbox.x = player.x - 125;
 				this.slashHitbox.y = player.y;
 			}
@@ -326,6 +341,9 @@ Stage1.prototype = {
 	// },
 	disableInput: function() {
 		inputEnabled = true;
+	},
+	disableSlash: function() {
+		inputEnabled = false;
 	},
 	enemyImmunity: function() {
 		enemyImmune = false;
