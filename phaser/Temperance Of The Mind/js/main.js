@@ -19,6 +19,7 @@ var enemySpeed;
 var enemyImmune;
 var inputEnabled;
 var swordEquipped;
+var shieldEquipped;
 var playerImmune;
 var platformSpeed;
 var slashing;
@@ -31,6 +32,7 @@ window.onload = function() {
 	game.state.add('Load',Load);
 	game.state.add('Title',Title);
 	game.state.add('Stage1',Stage1);
+	game.state.add('Stage2',Stage2);
 	game.state.add('GameOver',GameOver);
 	game.state.add('Win',Win);
 	game.state.start('Load');
