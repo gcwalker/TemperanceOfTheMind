@@ -32,6 +32,7 @@ window.onload = function() {
 	// define states
 	game.state.add('Load',Load);
 	game.state.add('Title',Title);
+	game.state.add('dialogue', Dialogue);
 	game.state.add('Stage1',Stage1);
 	game.state.add('Stage2',Stage2);
 	game.state.add('Stage3',Stage3);
