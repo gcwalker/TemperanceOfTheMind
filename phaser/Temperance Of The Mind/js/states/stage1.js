@@ -1,4 +1,4 @@
-/ Stage1 state
+// Stage1 state
 
 var Stage1 = function(game) {};
 Stage1.prototype = {
@@ -8,10 +8,10 @@ Stage1.prototype = {
 		playerHealth = 5;
 		this.enemyHealth = 3;
 		enemySpeed = -250;
-		platformSpeed = 250;
 		enemyImmune = false;
 		playerImmune = false;
 		swordEquipped = false;
+		shieldEquipped = false;
 		slashing = false;
 
 		// Add stage background
@@ -176,6 +176,11 @@ Stage1.prototype = {
 		game.physics.enable(this.sworditem, Phaser.Physics.ARCADE);
 
 		swordText = game.add.text(-10,16,'[SPACE]',{fontSize: '10px', fill:'#facade'});
+		
+		this.heart = game.add.sprite(-100,0,'heart');
+		this.heart.anchor.set(0.5);
+		this.heart.scale.set(0.5);
+		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
 
 		// Add boss fireballs
 		this.fireballs = game.add.emitter(0,0,500);
@@ -187,10 +192,7 @@ Stage1.prototype = {
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
 		this.fireballs.start(false,10000,800,300);
 
-		this.heart = game.add.sprite(-100,0,'heart');
-		this.heart.anchor.set(0.5);
-		this.heart.scale.set(0.5);
-		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
+
 	},
 	update: function() {
 
@@ -207,8 +209,9 @@ Stage1.prototype = {
 			this.enemy.animations.play('left');
 		}
 		if(game.physics.arcade.collide(this.heart,player)){
-			music.stop();
-			game.state.start('Win');
+			playerHealth++;
+			//music.stop();
+			game.state.start('Stage2');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
 			fireball.play();
@@ -231,6 +234,9 @@ Stage1.prototype = {
 
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
 			fireball.play();
+			//this.fireballchild = 
+			//this.fireballs.getClosestTo(player).kill();
+			//this.fireballchild.kill();
 			--playerHealth;
 			if(playerHealth == 0){
 				music.stop();
@@ -346,15 +352,8 @@ Stage1.prototype = {
 		enemy.body.velocity.x = enemySpeed;
 	},
 	// flipPlatform: function(platforms) {
-	// 	platformSpeed = platformSpeed * -1; 
-	// 	platforms.body.velocity.x = platformSpeed;
-	//      platform2t.body.velocity.x = platformSpeed;
-	//         platform3t.body.velocity.x = platformSpeed;
-	//       platform4t.body.velocity.x = platformSpeed;
-	//       platform5t.body.velocity.x = platformSpeed;
-	//      platform6t.body.velocity.x = platformSpeed;
-	//       platform7t.body.velocity.x = platformSpeed;
-	//       platform8t.body.velocity.x = platformSpeed;
+	// 	enemySpeed = enemySpeed * -1; 
+	// 	platforms.body.velocity.x = enemySpeed;
 	// },
 	disableInput: function() {
 		inputEnabled = true;
