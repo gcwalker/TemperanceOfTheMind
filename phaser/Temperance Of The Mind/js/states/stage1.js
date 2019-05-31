@@ -84,12 +84,12 @@ Stage1.prototype = {
 		//player.body.immovable = true;
 
 		// add player animations
-		player.animations.add('right',[11,12,13,14],6,true);
-		player.animations.add('left',[15,16,17,0],6,true);
-		player.animations.add('slashright',[4,5,6],6,false);
-		player.animations.add('slashleft',[7,8,9],6,false);
-		player.animations.add('standingleft',[1],6,true);
-		player.animations.add('standingright',[10],6,true);
+		player.animations.add('right',[1,2,3,4],6,true);
+		player.animations.add('left',[5,6,7,8],6,true);
+		player.animations.add('slashright',[10,11,12],6,false);
+		player.animations.add('slashleft',[13,14,15],6,false);
+		player.animations.add('standingleft',[9],6,true);
+		player.animations.add('standingright',[0],6,true);
 
 		this.enemy.animations.add('right',[1,2,3,4],6,true);
 		this.enemy.animations.add('left',[5,6,7,8],6,true);
