@@ -23,6 +23,7 @@ var shieldEquipped;
 var playerImmune;
 var platformSpeed;
 var slashing;
+var shieldBubble;
 window.onload = function() {
 
 	// initialize game

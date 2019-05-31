@@ -162,6 +162,11 @@ Stage2.prototype = {
 		swordText = game.add.text(-10,16,'[SPACE]',{fontSize: '10px', fill:'#facade'});
 		shieldText = game.add.text(-10,16,'[SHIFT]',{fontSize: '10px', fill:'#facade'});
 
+		shieldBubble = game.add.sprite(-100,-100,'bubble');
+		shieldBubble.scale.set(1.7);
+		shieldBubble.alpha = 0.5;
+		shieldBubble.anchor.set(0.5);
+
 		// Add fireballs
 		this.fireballs = game.add.emitter(2700,800,500);
 		this.fireballs.makeParticles('fireball',0,500,true,false);
@@ -176,6 +181,8 @@ Stage2.prototype = {
 		this.heart.anchor.set(0.5);
 		this.heart.scale.set(0.5);
 		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
+
+
 	},
 	update: function() {
 
@@ -183,17 +190,14 @@ Stage2.prototype = {
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
 		if(game.physics.arcade.collide(this.heart,player)){
-			music.stop();
+			//music.stop();
 			game.state.start('Win');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
 			fireball.play();
-			music.stop();
+			//music.stop();
 			game.state.start('GameOver');
 		}
-		// this.fireballs.x = this.enemy.x;
-		// this.fireballs.y = this.enemy.y;
-
 		// Player pickup shield
 		if(game.physics.arcade.overlap(player, this.shielditem)){
 			shieldEquipped = true;
@@ -258,7 +262,7 @@ Stage2.prototype = {
 				//player.animations.stop();
 			}
 		}
-		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
+		if(cursors.up.isDown && player.body.touching.down && hitPlatform && inputEnabled == true){ // Makes player jump if they are on the ground and press up key
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
@@ -281,6 +285,26 @@ Stage2.prototype = {
 				player.animations.play('slashleft');
 				this.slashHitbox.x = player.x - 85;
 				this.slashHitbox.y = player.y;
+			}
+		}
+		if(hitPlatform && inputEnabled == true && shieldEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SHIFT)){
+			slashing = true;
+			inputEnabled = false;
+			playerImmune = true;
+			this.timer = game.time.create(1000,true);
+			this.timer.add(1000, this.disableSlash, this);
+			this.timer.add(1000, this.disableInput, this);
+			this.timer.add(1000, this.playerImmunity, this);
+			this.timer.add(1000,this.moveHitbox,this);
+			this.timer.start();
+			if(this.facingRight == true){
+				//player.animations.play('slashright');
+				shieldBubble.x = player.x;
+				shieldBubble.y = player.y;
+			}
+			if(this.facingRight == false){
+				shieldBubble.y = player.y;
+				shieldBubble.x = player.x;
 			}
 		}
 	},
@@ -311,5 +335,7 @@ Stage2.prototype = {
 	moveHitbox: function() {
 		this.slashHitbox.x = 0;
 		this.slashHitbox.y = 0;
+		shieldBubble.x = -100;
+		shieldBubble.y = -100;
 	}
 };
