@@ -11,6 +11,7 @@ Load.prototype = {
 		game.load.image('ground01', 'assets/img/ground01.png');
 		game.load.image('bound', 'assets/img/bones.png');
 		game.load.image('lava', 'assets/img/lava.png');
+		game.load.image('water', 'assets/img/water.png');
 		game.load.image('sword', 'assets/img/sword.png');
 		game.load.image('shield', 'assets/img/shield.png');
 		game.load.image('heart', 'assets/img/heart.png');
@@ -18,6 +19,7 @@ Load.prototype = {
 		game.load.image('fireball', 'assets/img/smallfireball.png');
 		game.load.image('platform01', 'assets/img/platform01.png');
 		game.load.image('background01', 'assets/img/background01.png');
+		game.load.image('background02', 'assets/img/background02.png');
 		game.load.image('bubble', 'assets/img/bubble.png');
 		game.load.audio('menusound', 'assets/audio/menusound.mp3');
 		game.load.audio('stage1', 'assets/audio/bgmmain.mp3');

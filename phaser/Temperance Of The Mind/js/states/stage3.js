@@ -1,7 +1,7 @@
-// Stage2 state
+// Stage3 state
 
-var Stage2 = function(game) {};
-Stage2.prototype = {
+var Stage3 = function(game) {};
+Stage3.prototype = {
 	create: function() {
 		// Initialize variables
 		inputEnabled = true;
@@ -10,7 +10,7 @@ Stage2.prototype = {
 		slashing = false;
 		swordEquipped = true;
 		// Add stage background
-		this.bg = game.add.tileSprite(0,0,5000,800,'background01');
+		this.bg = game.add.tileSprite(0,0,5000,800,'background02');
 		game.world.setBounds(0,0,5000,800);
 
 		// Stage music
@@ -75,7 +75,7 @@ Stage2.prototype = {
 		bounds.setAll('body.immovable', true);
 		bounds.setAll('alpha', 0);
 
-		this.lava = game.add.tileSprite(0,780,5000,1400,'lava');
+		this.lava = game.add.tileSprite(0,780,5000,1400,'water');
 
 		// initialize player sprite
 		player = game.add.sprite(100, 665 ,'player', 'playerrun00');
@@ -171,7 +171,7 @@ Stage2.prototype = {
 
 		// Add fireballs
 		this.fireballs = game.add.emitter(2700,800,500);
-		this.fireballs.makeParticles('fireball',0,500,true,false);
+		this.fireballs.makeParticles('teardrop',0,500,true,false);
 		this.fireballs.setYSpeed(-800,-500);
 		this.fireballs.setXSpeed(-150,150);
 		this.fireballs.setRotation(500,600);
@@ -188,6 +188,7 @@ Stage2.prototype = {
 	},
 	update: function() {
 
+		this.lava.tilePosition.x -= 2;
 		// Make player collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
