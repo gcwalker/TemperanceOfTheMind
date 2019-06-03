@@ -9,6 +9,8 @@ Stage3.prototype = {
 		playerImmune = false;
 		slashing = false;
 		swordEquipped = true;
+		shieldEquipped = true;
+
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,5000,800,'background02');
 		game.world.setBounds(0,0,5000,800);
@@ -169,15 +171,16 @@ Stage3.prototype = {
 		shieldBubble.alpha = 0.5;
 		shieldBubble.anchor.set(0.5);
 
-		// Add fireballs
-		this.fireballs = game.add.emitter(2700,800,500);
-		this.fireballs.makeParticles('teardrop',0,500,true,false);
-		this.fireballs.setYSpeed(-800,-500);
-		this.fireballs.setXSpeed(-150,150);
-		this.fireballs.setRotation(500,600);
-		this.fireballs.gravity = 500;
-		this.fireballs.area = new Phaser.Rectangle(100, 100,3000,1);
-		this.fireballs.start(false,8000,400,300);
+		// Add teardrops
+		this.teardrops = game.add.emitter(5000,0,1000);
+		this.teardrops.makeParticles('teardrop',0,500,true,false);
+		this.teardrops.setYSpeed(500,750);
+		this.teardrops.scale.set(0.5);
+		//this.teardrops.setXSpeed(-150,150);
+		this.teardrops.setRotation(0,0);
+		this.teardrops.gravity = 500;
+		this.teardrops.area = new Phaser.Rectangle(1000, 10,8000,1);
+		this.teardrops.start(false,8000,150,1000);
 
 		this.heart = game.add.sprite(4900,700,'heart');
 		this.heart.anchor.set(0.5);
@@ -202,8 +205,7 @@ Stage3.prototype = {
 			game.state.start('GameOver');
 		}
 		// Player pickup shield
-		if(game.physics.arcade.overlap(player, this.shielditem)){
-			shieldEquipped = true;
+		if(shieldEquipped == true){
 			this.shielditem.x = 950;
 			this.shielditem.y = 20;
 			this.shielditem.fixedToCamera = true;
@@ -220,7 +222,7 @@ Stage3.prototype = {
 			swordText.fixedToCamera = true;
 		}
 
-		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
+		if(game.physics.arcade.overlap(player, this.teardrops) && playerImmune == false){
 			fireball.play();
 			--playerHealth;
 			if(playerHealth == 0){
@@ -269,11 +271,8 @@ Stage3.prototype = {
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
-			slashing = true;
 			inputEnabled = false;
-			//enemyImmune = true;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(300, this.disableSlash, this);
 			this.timer.add(500, this.disableInput, this);
 			this.timer.add(2000, this.enemyImmunity, this);
 			this.timer.add(300,this.moveHitbox,this);
@@ -291,14 +290,14 @@ Stage3.prototype = {
 			}
 		}
 		if(hitPlatform && inputEnabled == true && shieldEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SHIFT)){
-			slashing = true;
+			this.shielding = true;
 			inputEnabled = false;
 			playerImmune = true;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(1500, this.disableSlash, this);
-			this.timer.add(1500, this.disableInput, this);
+			this.timer.add(1000, this.disableShield, this);
+			this.timer.add(1000, this.disableInput, this);
 			this.timer.add(2000, this.playerImmunity, this);
-			this.timer.add(1500,this.moveHitbox,this);
+			this.timer.add(1000,this.moveHitbox,this);
 			this.timer.start();
 			if(this.facingRight == true){
 				player.animations.play('shieldright');
@@ -310,6 +309,10 @@ Stage3.prototype = {
 				shieldBubble.y = player.y;
 				shieldBubble.x = player.x;
 			}
+		}
+		if(this.shielding == true){
+			shieldBubble.y = player.y;
+			shieldBubble.x = player.x;			
 		}
 	},
 	render: function() {
@@ -327,9 +330,6 @@ Stage3.prototype = {
 	disableInput: function() {
 		inputEnabled = true;
 	},
-	disableSlash: function() {
-		inputEnabled = false;
-	},
 	enemyImmunity: function() {
 		enemyImmune = false;
 	},
@@ -341,5 +341,8 @@ Stage3.prototype = {
 		this.slashHitbox.y = 0;
 		shieldBubble.x = -100;
 		shieldBubble.y = -100;
+	},
+	disableShield: function() {
+		this.shielding = false;
 	}
 };
