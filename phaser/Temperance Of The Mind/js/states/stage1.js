@@ -12,7 +12,6 @@ Stage1.prototype = {
 		playerImmune = false;
 		swordEquipped = false;
 		shieldEquipped = false;
-		slashing = false;
 
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,4000,1400,'background01');
@@ -302,11 +301,8 @@ Stage1.prototype = {
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
-			slashing = true;
 			inputEnabled = false;
-			//enemyImmune = true;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(300, this.disableSlash, this);
 			this.timer.add(500, this.disableInput, this);
 			this.timer.add(2000, this.enemyImmunity, this);
 			this.timer.add(300,this.moveHitbox,this);
