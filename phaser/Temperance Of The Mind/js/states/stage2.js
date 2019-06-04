@@ -94,7 +94,6 @@ Stage2.prototype = {
 
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
-		player.body.bounce.y = 0.2;
 
 		// add player animations
 		player.animations.add('right',[1,2,3,4],6,true);
@@ -118,10 +117,6 @@ Stage2.prototype = {
 		ground.scale.setTo(0.5, 0.8);
 		var ground = platforms.create(4700,736, 'ground01');
 		ground.scale.setTo(0.5, 0.8);  
-		//var groundR = platforms.create(3300,1336, 'ground01');
-		//groundR.scale.setTo(0.9, 1); 
-		//var ground0 = platforms.create(0,1336, 'ground01');
-		//ground0.scale.setTo(3.8, 1); // Resize scale to fit the width of the game
 		
 		//Moving platforms
 		var platformMoving = platforms.create(900, 650, 'platform01');
@@ -220,6 +215,7 @@ Stage2.prototype = {
 
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
 			fireball.play();
+			this.fireballs.getClosestTo(player).kill();
 			--playerHealth;
 			if(playerHealth == 0){
 				music.stop();

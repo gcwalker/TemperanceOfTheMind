@@ -70,17 +70,13 @@ Stage1.prototype = {
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 		game.physics.enable(this.slashHitbox, Phaser.Physics.ARCADE);
 		game.physics.enable(this.lava, Phaser.Physics.ARCADE);
-		//player.body.maxVelocity.set(500);
-		//player.body.drag.set(200);
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
-		player.body.bounce.y = 0.2;
-		//player.body.setSize(50,50,100,100);
+
 		this.enemy.body.collideWorldBounds = true;
 		this.enemy.body.gravity.y = 1000;
 		this.enemy.body.bounce.y = 0.2;
 		this.enemy.body.velocity.x = enemySpeed;
-		//player.body.immovable = true;
 
 		// add player animations
 		player.animations.add('right',[1,2,3,4],6,true);
@@ -233,9 +229,7 @@ Stage1.prototype = {
 
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
 			fireball.play();
-			//this.fireballchild = 
-			//this.fireballs.getClosestTo(player).kill();
-			//this.fireballchild.kill();
+			this.fireballs.getClosestTo(player).kill();
 			--playerHealth;
 			if(playerHealth == 0){
 				music.stop();

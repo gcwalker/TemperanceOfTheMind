@@ -1,7 +1,7 @@
-// Stage3 state
+// Stage4 state
 
-var Stage3 = function(game) {};
-Stage3.prototype = {
+var Stage4 = function(game) {};
+Stage4.prototype = {
 	create: function() {
 		// Initialize variables
 		inputEnabled = true;
@@ -12,8 +12,8 @@ Stage3.prototype = {
 		shieldEquipped = true;
 
 		// Add stage background
-		this.bg = game.add.tileSprite(0,0,5000,800,'background02');
-		game.world.setBounds(0,0,5000,800);
+		this.bg = game.add.tileSprite(0,0,5000,1600,'background02');
+		game.world.setBounds(0,0,5000,1600);
 
 		// Stage music
 		//music = game.add.audio('stage1');
@@ -33,24 +33,31 @@ Stage3.prototype = {
 		bounds.enableBody = true;
 
 		//Platform 1
-		var left = bounds.create(550,700,'bound');
+		var left = bounds.create(550,1400,'bound');
 		left.anchor.set(0.5);
 		left.scale.setTo(0.2,0.2);
-		var right = bounds.create(1500,700,'bound');
+		var right = bounds.create(1500,1400,'bound');
 		right.anchor.set(0.5);
 		right.scale.setTo(0.2,0.2);
 		//Platform 2
-		var left = bounds.create(1150,400,'bound');
+		var left = bounds.create(1150,1100,'bound');
 		left.anchor.set(0.5);
 		left.scale.setTo(0.2,0.2);
-		var right = bounds.create(2000,400,'bound');
+		var right = bounds.create(1800,1100,'bound');
+		right.anchor.set(0.5);
+		right.scale.setTo(0.2,0.2);	
+		//Platform 2.5	
+		var left = bounds.create(2000,1100,'bound');
+		left.anchor.set(0.5);
+		left.scale.setTo(0.2,0.2);
+		var right = bounds.create(2700,1100,'bound');
 		right.anchor.set(0.5);
 		right.scale.setTo(0.2,0.2);		
 		//Platform 3
-		var left = bounds.create(2000,500,'bound');
+		var left = bounds.create(2000,700,'bound');
 		left.anchor.set(0.5);
 		left.scale.setTo(0.2,0.2);
-		var right = bounds.create(2550,500,'bound');
+		var right = bounds.create(2550,700,'bound');
 		right.anchor.set(0.5);
 		right.scale.setTo(0.2,0.2);
 		//Platform 4
@@ -75,12 +82,12 @@ Stage3.prototype = {
 		right.anchor.set(0.5);
 		right.scale.setTo(0.2,0.2);
 		bounds.setAll('body.immovable', true);
-		bounds.setAll('alpha', 0);
+		bounds.setAll('alpha', 1);
 
-		this.lava = game.add.tileSprite(0,780,5000,1400,'water');
+		this.lava = game.add.tileSprite(0,1580,5000,1400,'water');
 
 		// initialize player sprite
-		player = game.add.sprite(100, 665 ,'player', 'playerrun00');
+		player = game.add.sprite(100, 1465 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
 		//player.scale.x = (-0.2);
@@ -116,7 +123,7 @@ Stage3.prototype = {
 		platforms = game.add.group();
 		platforms.enableBody = true; // enable physics for platform group
 		
-		var ground = platforms.create(0,736, 'ground01');
+		var ground = platforms.create(0,1536, 'ground01');
 		ground.scale.setTo(0.5, 0.8);
 		var ground = platforms.create(4700,736, 'ground01');
 		ground.scale.setTo(0.5, 0.8);  
@@ -126,26 +133,42 @@ Stage3.prototype = {
 		//ground0.scale.setTo(3.8, 1); // Resize scale to fit the width of the game
 		
 		//Moving platforms
-		var platformMoving = platforms.create(900, 650, 'platform01');
+		//Platform1
+		var platformMoving = platforms.create(900, 1350, 'platform01');
 		platformMoving.scale.setTo(2, 2);
 		platformMoving.body.velocity.x = -170;
-		var platformMoving = platforms.create(1300, 400, 'platform01');
+		//platform2
+		var platformMoving = platforms.create(1300, 1100, 'platform01');
 		platformMoving.scale.setTo(2, 2);
 		platformMoving.body.velocity.x = -170;
-		var platformMoving = platforms.create(2200, 500, 'platform01');
+		//Platform2.5
+		var platformMoving = platforms.create(2100, 1100, 'platform01');
+		platformMoving.scale.setTo(2, 2);
+		platformMoving.body.velocity.x = -170;		
+		//Platform3
+		var platformMoving = platforms.create(2200, 700, 'platform01');
 		platformMoving.scale.setTo(2, 2);
 		platformMoving.body.velocity.x = -170;
-		var platform = platforms.create(2650, 600, 'platform01');
-		platform.scale.setTo(5, 2);
+		//platform4
 		var platformMoving = platforms.create(3250, 500, 'platform01');
 		platformMoving.scale.setTo(2, 2);
 		platformMoving.body.velocity.y = -170;
+		//platform5
 		var platformMoving = platforms.create(3650, 500, 'platform01');
 		platformMoving.scale.setTo(1.5, 1.6);
 		platformMoving.body.velocity.y = -140;
+		//platform6
 		var platformMoving = platforms.create(4150, 600, 'platform01');
 		platformMoving.scale.setTo(1.2, 1.5);
 		platformMoving.body.velocity.x = -170;
+
+		//Stationary platforms
+		var platform = platforms.create(1750, 900, 'platform01');
+		platform.scale.setTo(5, 2);
+		var platform = platforms.create(2750, 1300, 'platform01');
+		platform.scale.setTo(5, 2);
+		var platform = platforms.create(2650, 600, 'platform01');
+		platform.scale.setTo(5, 2);
 
 		platforms.setAll('body.immovable', true);
 
@@ -177,9 +200,9 @@ Stage3.prototype = {
 		this.teardrops.scale.set(0.5);
 		//this.teardrops.setXSpeed(-150,150);
 		this.teardrops.setRotation(0,0);
-		this.teardrops.gravity = 500;
+		this.teardrops.gravity = 100;
 		this.teardrops.area = new Phaser.Rectangle(1000, 10,8000,1);
-		this.teardrops.start(false,8000,150,1000);
+		this.teardrops.start(false,8000,250,1000);
 
 		this.heart = game.add.sprite(4900,700,'heart');
 		this.heart.anchor.set(0.5);
@@ -234,9 +257,9 @@ Stage3.prototype = {
 			inputEnabled = false;
 			player.body.velocity.y = -400;
 			player.body.velocity.x = (-1 * player.body.velocity.x);
-			this.timer = game.time.create(1000,true);
+			this.timer = game.time.create(true);
 			this.timer.add(150, this.disableInput, this);
-			this.timer.add(1250, this.playerImmunity, this);
+			this.timer.add(1500, this.playerImmunity, this);
 			this.timer.start();	
 		}
 		// check for player input
@@ -292,7 +315,7 @@ Stage3.prototype = {
 			this.timer = game.time.create(1000,true);
 			this.timer.add(1000, this.disableShield, this);
 			this.timer.add(1000, this.disableInput, this);
-			this.timer.add(2000, this.playerImmunity, this);
+			this.timer.add(2500, this.playerImmunity, this);
 			this.timer.add(1000,this.moveHitbox,this);
 			this.timer.start();
 			if(this.facingRight == true){
@@ -319,10 +342,6 @@ Stage3.prototype = {
 		platformMoving.body.velocity.x = platformMoving.body.velocity.x * -1; 
 		platformMoving.body.velocity.y = platformMoving.body.velocity.y * -1; 
 	},
-	// flipPlatform: function(platforms) {
-	// 	enemySpeed = enemySpeed * -1; 
-	// 	platforms.body.velocity.x = enemySpeed;
-	// },
 	disableInput: function() {
 		inputEnabled = true;
 	},
