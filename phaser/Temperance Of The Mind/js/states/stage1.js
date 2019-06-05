@@ -14,7 +14,8 @@ Stage1.prototype = {
 		shieldEquipped = false;
 
 		// Add stage background
-		this.bg = game.add.tileSprite(0,0,4000,1400,'background01');
+		this.bg = game.add.tileSprite(0,700,4000,700,'background01');
+		this.bgtop = game.add.tileSprite(0,0,4000,700,'background01color');
 		game.world.setBounds(0,0,4000,1400);
 
 

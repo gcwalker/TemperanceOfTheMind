@@ -18,7 +18,8 @@ Load.prototype = {
 		game.load.image('teardrop', 'assets/img/teardrop.png');
 		game.load.image('fireball', 'assets/img/smallfireball.png');
 		game.load.image('platform01', 'assets/img/platform01.png');
-		game.load.image('background01', 'assets/img/background01.png');
+		game.load.image('background01', 'assets/img/finalbackground1.png');
+		game.load.image('background01color', 'assets/img/finalbackground1topcolor.png');
 		game.load.image('background02', 'assets/img/background02.png');
 		game.load.image('bubble', 'assets/img/bubble.png');
 		game.load.audio('menusound', 'assets/audio/menusound.mp3');
