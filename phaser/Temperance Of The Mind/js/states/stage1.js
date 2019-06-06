@@ -5,7 +5,7 @@ Stage1.prototype = {
 	create: function() {
 		// Initialize variables
 		inputEnabled = true;
-		playerHealth = 5;
+		playerHealth = 10;
 		this.enemyHealth = 3;
 		enemySpeed = -250;
 		enemyImmune = false;
@@ -54,13 +54,11 @@ Stage1.prototype = {
 		player = game.add.sprite(100, 565 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
-		//player.scale.x = (-0.2);
 		player.destroyed = false;
 
 		this.enemy = game.add.sprite(1000, 565,'boss1');
 		this.enemy.anchor.set(0.5);
 		this.enemy.scale.setTo(1.7);
-		//this.enemy.scale.x = (-0.2);
 
 		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
@@ -71,6 +69,7 @@ Stage1.prototype = {
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 		game.physics.enable(this.slashHitbox, Phaser.Physics.ARCADE);
 		game.physics.enable(this.lava, Phaser.Physics.ARCADE);
+
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
 
@@ -102,12 +101,8 @@ Stage1.prototype = {
 		ground.scale.setTo(3, 0.8); 
 		var groundR = platforms.create(3300,1336, 'ground01');
 		groundR.scale.setTo(0.9, 1); 
-		//var ground0 = platforms.create(0,1336, 'ground01');
-		//ground0.scale.setTo(3.8, 1); // Resize scale to fit the width of the game
 		
 		// Top floor platforms
-		//var platform1t = platforms.create(300, 400, 'platform01');
-		//platform1t.scale.setTo(2, 2);
 		var platform2t = platforms.create(1100, 300, 'platform01');
 		platform2t.scale.setTo(2, 2);
 		var platform3t = platforms.create(700, 400, 'platform01');
@@ -146,23 +141,11 @@ Stage1.prototype = {
 		platform8b.scale.setTo(2, 2);
 		var platform9b = platforms.create(0, 1100, 'platform01');
 		platform9b.scale.setTo(2, 2);
-		//platform3b.body.velocity.x = platformSpeed;
-		// var leftp = bounds.create(700,1200,'bound');
-		// leftp.anchor.set(0.5);
-		// leftp.scale.setTo(0.2,0.2);
-		// leftp.alpha = 1;
-		// leftp.body.immovable = true;
-		// var rightp = bounds.create(2800,1200,'bound');
-		// rightp.anchor.set(0.5);
-		// rightp.scale.setTo(0.2,0.2);
-		// rightp.alpha = 1;
-		// rightp.body.immovable = true;
-
 
 		platforms.setAll('body.immovable', true);
 
 		// TEMP health text at top left of camera
-		healthText = game.add.text(16,16,'Health: 5',{fontSize: '32px', fill:'#facade'});
+		healthText = game.add.text(16,16,'Health: 10',{fontSize: '32px', fill:'#facade'});
 		healthText.fixedToCamera = true;
 		game.camera.follow(player,1);
 
@@ -342,10 +325,6 @@ Stage1.prototype = {
 		enemySpeed = enemySpeed * -1;
 		enemy.body.velocity.x = enemySpeed;
 	},
-	// flipPlatform: function(platforms) {
-	// 	enemySpeed = enemySpeed * -1; 
-	// 	platforms.body.velocity.x = enemySpeed;
-	// },
 	disableInput: function() {
 		inputEnabled = true;
 	},

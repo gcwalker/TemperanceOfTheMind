@@ -7,6 +7,7 @@ Load.prototype = {
 	preload: function() {
 		// preload assets
 		game.load.spritesheet('boss1', 'assets/img/boss1.png',44,64);
+		game.load.spritesheet('boss2', 'assets/img/boss2.png',44,64);
 		game.load.atlas('player','assets/img/playerspritesheet.png','assets/img/player.json');
 		game.load.image('ground01', 'assets/img/ground01.png');
 		game.load.image('bound', 'assets/img/bones.png');
@@ -22,6 +23,8 @@ Load.prototype = {
 		game.load.image('background01color', 'assets/img/finalbackground1topcolor.png');
 		game.load.image('background02', 'assets/img/background02.png');
 		game.load.image('bubble', 'assets/img/bubble.png');
+		game.load.image('doorclosed', 'assets/img/door0.png');
+		game.load.image('dooropen', 'assets/img/door1.png');
 		game.load.audio('menusound', 'assets/audio/menusound.mp3');
 		game.load.audio('stage1', 'assets/audio/bgmmain.mp3');
 		game.load.audio('slashmiss', 'assets/audio/slashmiss.mp3');

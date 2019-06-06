@@ -6,10 +6,13 @@ Stage4.prototype = {
 		// Initialize variables
 		inputEnabled = true;
 		platformSpeed = 170;
+		enemySpeed = -200;
+		enemyImmune = false;
 		playerImmune = false;
 		slashing = false;
 		swordEquipped = true;
 		shieldEquipped = true;
+		this.enemyHealth = 5;
 
 		// Add stage background
 		this.bg = game.add.tileSprite(0,0,5000,1600,'background02');
@@ -81,17 +84,27 @@ Stage4.prototype = {
 		var right = bounds.create(4650,600,'bound');
 		right.anchor.set(0.5);
 		right.scale.setTo(0.2,0.2);
+		//Boss platform
+		var left = bounds.create(2680,550,'bound');
+		left.anchor.set(0.5);
+		left.scale.setTo(0.2,0.2);
+		var right = bounds.create(3200,550,'bound');
+		right.anchor.set(0.5);
+		right.scale.setTo(0.2,0.2);
 		bounds.setAll('body.immovable', true);
-		bounds.setAll('alpha', 1);
+		bounds.setAll('alpha', 0);
 
 		this.lava = game.add.tileSprite(0,1580,5000,1400,'water');
 
 		// initialize player sprite
-		player = game.add.sprite(100, 1465 ,'player', 'playerrun00');
+		player = game.add.sprite(100, 1463 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
-		//player.scale.x = (-0.2);
 		player.destroyed = false;
+
+		this.enemy = game.add.sprite(2900, 540,'boss2');
+		this.enemy.anchor.set(0.5);
+		this.enemy.scale.setTo(1.7);
 
 		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
@@ -100,10 +113,16 @@ Stage4.prototype = {
 		// apply physics to game stuff
 		game.physics.enable(player, Phaser.Physics.ARCADE);
 		game.physics.enable(this.slashHitbox, Phaser.Physics.ARCADE);
+		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 		game.physics.enable(this.lava, Phaser.Physics.ARCADE);
 
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
+
+		this.enemy.body.collideWorldBounds = true;
+		this.enemy.body.gravity.y = 1000;
+		this.enemy.body.bounce.y = 0.2;
+		this.enemy.body.velocity.x = enemySpeed;
 
 		// add player animations
 		player.animations.add('right',[1,2,3,4],6,true);
@@ -114,6 +133,9 @@ Stage4.prototype = {
 		player.animations.add('standingright',[0],6,true);
 		player.animations.add('shieldright',[16],6,true);
 		player.animations.add('shieldleft',[17],6,true);
+
+		this.enemy.animations.add('right',[1,2,3,4],6,true);
+		this.enemy.animations.add('left',[5,6,7,8],6,true);
 
 		this.facingRight = true;
 
@@ -168,7 +190,7 @@ Stage4.prototype = {
 		var platform = platforms.create(2750, 1300, 'platform01');
 		platform.scale.setTo(5, 2);
 		var platform = platforms.create(2650, 600, 'platform01');
-		platform.scale.setTo(5, 2);
+		platform.scale.setTo(6.5, 2);
 
 		platforms.setAll('body.immovable', true);
 
@@ -194,7 +216,7 @@ Stage4.prototype = {
 		shieldBubble.anchor.set(0.5);
 
 		// Add teardrops
-		this.teardrops = game.add.emitter(5000,0,1000);
+		this.teardrops = game.add.emitter(5000,-100,1000);
 		this.teardrops.makeParticles('teardrop',0,500,true,false);
 		this.teardrops.setYSpeed(500,750);
 		this.teardrops.scale.set(0.5);
@@ -209,6 +231,15 @@ Stage4.prototype = {
 		this.heart.scale.set(0.5);
 		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
 
+		this.door = game.add.sprite(4900,663,'doorclosed');
+		this.door.anchor.set(0.5);
+		this.door.scale.set(0.25);
+		game.physics.enable(this.door, Phaser.Physics.ARCADE);
+
+		this.dooropen = game.add.sprite(-1000,-1000,'dooropen');
+		this.dooropen.anchor.set(0.5);
+		this.dooropen.scale.set(0.25);
+		game.physics.enable(this.dooropen, Phaser.Physics.ARCADE);
 
 	},
 	update: function() {
@@ -216,14 +247,23 @@ Stage4.prototype = {
 		this.lava.tilePosition.x -= 2;
 		// Make player collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
+		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
+		if(game.physics.arcade.collide(bounds, this.enemy)){
+			this.flipEnemy(this.enemy);
+		}
+		if(enemySpeed > 0){
+			this.enemy.animations.play('right');
+		}
+		else{
+			this.enemy.animations.play('left');
+		}
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
 		if(game.physics.arcade.collide(this.heart,player)){
-			//music.stop();
-			game.state.start('Win');
+			playerHealth++;
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
 			fireball.play();
-			//music.stop();
+			music.stop();
 			game.state.start('GameOver');
 		}
 		// Player pickup shield
@@ -262,12 +302,32 @@ Stage4.prototype = {
 			this.timer.add(1500, this.playerImmunity, this);
 			this.timer.start();	
 		}
-		// check for player input
-		if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
+		
+		if(game.physics.arcade.overlap(player, this.enemy) && enemyImmune == false){
+			if(player.animations.name == 'shieldright' | player.animations.name == 'shieldleft')
+				this.flipEnemy(this.enemy); 
+			else{
+				--playerHealth;
+				if(playerHealth == 0){
+					music.stop();
+					game.state.start('GameOver');
+				}
+				healthText.text = 'Health: ' + playerHealth;
+				inputEnabled = false;
+				enemyImmune = true;
+				player.body.velocity.y = -400;
+				player.body.velocity.x = (-1 * player.body.velocity.x);
+				this.flipEnemy(this.enemy); 
+				this.timer = game.time.create(1000,true);
+				this.timer.add(250, this.disableInput, this);
+				this.timer.add(2000, this.enemyImmunity, this);
+				this.timer.start();
+			}
+		}// check for player input
+		else if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
 			player.body.velocity.x = -275;
 			player.animations.play('left');
 			this.facingRight = false;
-			//player.animations.play('left');
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
 			player.body.velocity.x = 275;
@@ -333,10 +393,40 @@ Stage4.prototype = {
 			shieldBubble.y = player.y;
 			shieldBubble.x = player.x;			
 		}
+		if(game.physics.arcade.overlap(this.slashHitbox,this.enemy) && enemyImmune == false){
+			--this.enemyHealth;
+			this.enemy.body.velocity.y = -200;
+			enemyImmune = true;
+			this.timer = game.time.create(1000,true);
+			this.timer.add(2000, this.enemyImmunity, this);
+			this.timer.start();
+			slashhit.play();
+			this.flipEnemy(this.enemy);
+			console.log("Enemy hit!");
+			if(this.enemyHealth == 0){
+				this.heart.x = this.enemy.x;
+				this.heart.y = this.enemy.y + 25;
+				this.enemyAlive = false;
+				this.enemy.kill();
+				this.teardrops.lifespan = 1;
+				this.door.x = -100;
+				this.door.y = -100;
+				this.dooropen.x = 4900;
+				this.dooropen.y = 680;
+			}
+		}
+		if(game.physics.arcade.collide(this.dooropen,player)){
+			music.stop();
+			game.state.start('Win');
+		}
 	},
 	render: function() {
 		//game.debug.spriteBounds(player);
 		//game.debug.spriteCorners(player, true,true);
+	},
+	flipEnemy: function(enemy) {
+		enemySpeed = enemySpeed * -1;
+		enemy.body.velocity.x = enemySpeed;
 	},
 	flipPlatform: function(bounds, platformMoving) {
 		platformMoving.body.velocity.x = platformMoving.body.velocity.x * -1; 

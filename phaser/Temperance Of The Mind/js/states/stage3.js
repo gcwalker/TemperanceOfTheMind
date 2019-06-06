@@ -179,7 +179,7 @@ Stage3.prototype = {
 		this.teardrops.setRotation(0,0);
 		this.teardrops.gravity = 500;
 		this.teardrops.area = new Phaser.Rectangle(1000, 10,8000,1);
-		this.teardrops.start(false,8000,150,1000);
+		this.teardrops.start(false,8000,250,1000);
 
 		this.heart = game.add.sprite(4900,700,'heart');
 		this.heart.anchor.set(0.5);
@@ -196,11 +196,11 @@ Stage3.prototype = {
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
 		if(game.physics.arcade.collide(this.heart,player)){
 			//music.stop();
-			game.state.start('Win');
+			game.state.start('Stage4');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
 			fireball.play();
-			//music.stop();
+			music.stop();
 			game.state.start('GameOver');
 		}
 		// Player pickup shield
@@ -244,7 +244,6 @@ Stage3.prototype = {
 			player.body.velocity.x = -275;
 			player.animations.play('left');
 			this.facingRight = false;
-			//player.animations.play('left');
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
 			player.body.velocity.x = 275;
@@ -319,10 +318,6 @@ Stage3.prototype = {
 		platformMoving.body.velocity.x = platformMoving.body.velocity.x * -1; 
 		platformMoving.body.velocity.y = platformMoving.body.velocity.y * -1; 
 	},
-	// flipPlatform: function(platforms) {
-	// 	enemySpeed = enemySpeed * -1; 
-	// 	platforms.body.velocity.x = enemySpeed;
-	// },
 	disableInput: function() {
 		inputEnabled = true;
 	},

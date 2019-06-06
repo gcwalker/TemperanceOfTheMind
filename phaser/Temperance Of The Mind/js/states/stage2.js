@@ -9,7 +9,8 @@ Stage2.prototype = {
 		playerImmune = false;
 		swordEquipped = true;
 		// Add stage background
-		this.bg = game.add.tileSprite(0,0,5000,800,'background01');
+		this.bgtop = game.add.tileSprite(0,0,5000,700,'background01color');
+		this.bg = game.add.tileSprite(0,100,5000,800,'background01');
 		game.world.setBounds(0,0,5000,800);
 
 		// Stage music
@@ -187,11 +188,11 @@ Stage2.prototype = {
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
 		if(game.physics.arcade.collide(this.heart,player)){
 			//music.stop();
-			game.state.start('Win');
+			game.state.start('Stage3');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
 			fireball.play();
-			//music.stop();
+			music.stop();
 			game.state.start('GameOver');
 		}
 		// Player pickup shield
@@ -237,7 +238,6 @@ Stage2.prototype = {
 			player.body.velocity.x = -275;
 			player.animations.play('left');
 			this.facingRight = false;
-			//player.animations.play('left');
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
 			player.body.velocity.x = 275;
@@ -248,15 +248,12 @@ Stage2.prototype = {
 			player.body.velocity.x = 0;
 		}
 		else{ // Stops animation if player is not moving
-			//player.animations.stop();
 			player.body.velocity.x = 0;
 			if(this.facingRight == true){
 				player.animations.play('standingright');
-				//player.animations.stop();
 			}
 			if(this.facingRight == false){
 				player.animations.play('standingleft');
-				//player.animations.stop();
 			}
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform && inputEnabled == true){ // Makes player jump if they are on the ground and press up key
@@ -264,7 +261,6 @@ Stage2.prototype = {
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
 			inputEnabled = false;
-			//enemyImmune = true;
 			this.timer = game.time.create(1000,true);
 			this.timer.add(500, this.disableInput, this);
 			this.timer.add(2000, this.enemyImmunity, this);
@@ -283,12 +279,14 @@ Stage2.prototype = {
 			}
 		}
 		if(hitPlatform && inputEnabled == true && shieldEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SHIFT)){
+			this.shielding = true;
 			inputEnabled = false;
 			playerImmune = true;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(1500, this.disableInput, this);
-			this.timer.add(2000, this.playerImmunity, this);
-			this.timer.add(1500,this.moveHitbox,this);
+			this.timer.add(1000, this.disableShield, this);
+			this.timer.add(1000, this.disableInput, this);
+			this.timer.add(2500, this.playerImmunity, this);
+			this.timer.add(1000,this.moveHitbox,this);
 			this.timer.start();
 			if(this.facingRight == true){
 				player.animations.play('shieldright');
@@ -301,6 +299,10 @@ Stage2.prototype = {
 				shieldBubble.x = player.x;
 			}
 		}
+		if(this.shielding == true){
+			shieldBubble.y = player.y;
+			shieldBubble.x = player.x;			
+		}
 	},
 	render: function() {
 		//game.debug.spriteBounds(player);
@@ -310,10 +312,6 @@ Stage2.prototype = {
 		platformMoving.body.velocity.x = platformMoving.body.velocity.x * -1; 
 		platformMoving.body.velocity.y = platformMoving.body.velocity.y * -1; 
 	},
-	// flipPlatform: function(platforms) {
-	// 	enemySpeed = enemySpeed * -1; 
-	// 	platforms.body.velocity.x = enemySpeed;
-	// },
 	disableInput: function() {
 		inputEnabled = true;
 	},
@@ -331,5 +329,8 @@ Stage2.prototype = {
 		this.slashHitbox.y = 0;
 		shieldBubble.x = -100;
 		shieldBubble.y = -100;
+	},
+	disableShield: function() {
+		this.shielding = false;
 	}
 };
