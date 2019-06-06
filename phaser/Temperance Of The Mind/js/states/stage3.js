@@ -12,7 +12,8 @@ Stage3.prototype = {
 		shieldEquipped = true;
 
 		// Add stage background
-		this.bg = game.add.tileSprite(0,0,5000,800,'background02');
+		this.bgtop = game.add.tileSprite(0,0,5000,700,'background02top');
+		this.bg = game.add.tileSprite(0,100,5000,800,'background02');
 		game.world.setBounds(0,0,5000,800);
 
 		// Stage music

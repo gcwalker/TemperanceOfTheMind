@@ -21,7 +21,8 @@ Load.prototype = {
 		game.load.image('platform01', 'assets/img/platform01.png');
 		game.load.image('background01', 'assets/img/finalbackground1.png');
 		game.load.image('background01color', 'assets/img/finalbackground1topcolor.png');
-		game.load.image('background02', 'assets/img/background02.png');
+		game.load.image('background02', 'assets/img/finalbackground2.png');
+		game.load.image('background02top', 'assets/img/finalbackground2top.png');
 		game.load.image('bubble', 'assets/img/bubble.png');
 		game.load.image('doorclosed', 'assets/img/door0.png');
 		game.load.image('dooropen', 'assets/img/door1.png');

@@ -11,6 +11,7 @@
 var game;
 var player;
 var platforms;
+var hearts; 
 var playerHealth;
 var healthText;
 var enemy;

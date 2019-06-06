@@ -15,7 +15,8 @@ Stage4.prototype = {
 		this.enemyHealth = 5;
 
 		// Add stage background
-		this.bg = game.add.tileSprite(0,0,5000,1600,'background02');
+		this.bgtop = game.add.tileSprite(0,0,5000,900,'background02top');
+		this.bg = game.add.tileSprite(0,900,5000,800,'background02');
 		game.world.setBounds(0,0,5000,1600);
 
 		// Stage music
@@ -226,11 +227,17 @@ Stage4.prototype = {
 		this.teardrops.area = new Phaser.Rectangle(1000, 10,8000,1);
 		this.teardrops.start(false,8000,250,1000);
 
-		this.heart = game.add.sprite(4900,700,'heart');
-		this.heart.anchor.set(0.5);
-		this.heart.scale.set(0.5);
-		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
-
+		hearts = game.add.group();
+		hearts.enableBody = true;
+		var heart = hearts.create(3070,1270,'heart');
+		heart.anchor.set(0.5);
+		heart.scale.set(0.5);
+		var heart = hearts.create(2970,1270,'heart');
+		heart.anchor.set(0.5);
+		heart.scale.set(0.5);
+		var heart = hearts.create(2870,1270,'heart');
+		heart.anchor.set(0.5);
+		heart.scale.set(0.5);
 		this.door = game.add.sprite(4900,663,'doorclosed');
 		this.door.anchor.set(0.5);
 		this.door.scale.set(0.25);
@@ -258,9 +265,8 @@ Stage4.prototype = {
 			this.enemy.animations.play('left');
 		}
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
-		if(game.physics.arcade.collide(this.heart,player)){
-			playerHealth++;
-		}
+		game.physics.arcade.collide(player,hearts,this.collectHeart,null,this);
+
 		if(game.physics.arcade.collide(this.lava,player)){
 			fireball.play();
 			music.stop();
@@ -404,8 +410,6 @@ Stage4.prototype = {
 			this.flipEnemy(this.enemy);
 			console.log("Enemy hit!");
 			if(this.enemyHealth == 0){
-				this.heart.x = this.enemy.x;
-				this.heart.y = this.enemy.y + 25;
 				this.enemyAlive = false;
 				this.enemy.kill();
 				this.teardrops.lifespan = 1;
@@ -449,5 +453,10 @@ Stage4.prototype = {
 	},
 	disableShield: function() {
 		this.shielding = false;
+	},
+	collectHeart: function(player,heart) {
+		heart.kill();
+		playerHealth++;
+		healthText.text = 'Health: ' + playerHealth;
 	}
 };
