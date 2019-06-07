@@ -3,22 +3,19 @@
 var Title = function(game) {};
 Title.prototype = {
 	create: function() {
+		var bg = game.add.sprite(0,0,'titlebackground');
 
-
-		var titleText = game.add.text(game.width/2, game.height/2 -100, 'Temperance Of The Mind', {font: 'Helvetica', fontSize: '48px', fill: '#fff'});
+		var titleText = game.add.text(game.width/2, game.height/2 -100, 'Temperance Of The Mind', {font: 'Press Start 2P', fontSize: '48px', fill: '#696969'});
 		titleText.anchor.set(0.5);
 
-		var instructText = game.add.text(game.width/2, game.height/2 - 48, 'Use the ARROW KEYS to move and jump!', {font: 'Helvetica', fontSize: '24px', fill: '#fff'});
-		instructText.anchor.set(0.5);
-
-		var playText = game.add.text(game.width/2, game.height*.8, 'Press SPACEBAR to Start', {font: 'Helvetica', fontSize: '24px', fill: '#fff'});
+		var playText = game.add.text(game.width/2, 500, 'Press SPACEBAR to continue', {font: 'Press Start 2P', fontSize: '24px', fill: '#000'});
 		playText.anchor.set(0.5);
 	},
 	update: function() {
 		// check for SPACEBAR input
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
 			game.sound.play('menusound');
-			game.state.start('Stage1');
+			game.state.start('Dialogue0');
 		}
 	}
 };
