@@ -25,6 +25,9 @@ var playerImmune;
 var platformSpeed;
 var slashing;
 var shieldBubble;
+var currentStage;
+var respawnHP;
+
 window.onload = function() {
 
 	// initialize game
