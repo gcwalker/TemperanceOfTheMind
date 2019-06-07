@@ -39,6 +39,7 @@ Load.prototype = {
 		game.load.audio('slashmiss', 'assets/audio/slashmiss.mp3');
 		game.load.audio('slashhit', 'assets/audio/slashhit.mp3');
 		game.load.audio('fireball', 'assets/audio/fireball.mp3');
+		game.load.audio('shield', 'assets/audio/shield.mp3');
 	},
 	create: function() {
 		game.state.start('Title');
