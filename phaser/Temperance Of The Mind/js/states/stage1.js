@@ -4,6 +4,7 @@ var Stage1 = function(game) {};
 Stage1.prototype = {
 	create: function() {
 		// Initialize variables
+		currentStage = 1;
 		inputEnabled = true;
 		playerHealth = 10;
 		this.enemyHealth = 3;
@@ -171,6 +172,9 @@ Stage1.prototype = {
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
 		this.fireballs.start(false,10000,800,300);
 
+		this.Instructions = game.add.text(560, 460, 'Use the arrow keys to move left, right \nand to jump. \n\nYour inventory appears in the upper right \ncorner of the screen. \n\nMay the odds be in your favor!', {font: 'Press Start 2P', fontSize: '24px', fill: '#fff'});
+		this.Instructions.anchor.set(0.5);
+		this.Instructions.align = 'center';
 
 	},
 	update: function() {
@@ -250,13 +254,15 @@ Stage1.prototype = {
 			this.timer.start();
 		} // check for player input
 		else if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
-			player.body.velocity.x = -275;
+			this.Instructions.destroy();
+			player.body.velocity.x = -295;
 			player.animations.play('left');
 			this.facingRight = false;
 			//player.animations.play('left');
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
-			player.body.velocity.x = 275;
+			this.Instructions.destroy();
+			player.body.velocity.x = 295;
 			player.animations.play('right');
 			this.facingRight = true;
 		}
@@ -276,6 +282,7 @@ Stage1.prototype = {
 			}
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
+			this.Instructions.destroy();
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){

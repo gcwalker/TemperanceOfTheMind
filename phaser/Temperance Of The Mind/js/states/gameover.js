@@ -11,7 +11,23 @@ GameOver.prototype = {
 	},
 	update: function() {
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
-			game.state.start('Stage1');
+			if(currentStage == 1)
+				game.state.start('Stage1');
+			if(currentStage == 2){
+				playerHealth = respawnHP;
+				game.state.start('Stage2');
+			}
+			if(currentStage == 3){
+				playerHealth = respawnHP;
+				game.state.start('Stage3');
+			}
+			if(currentStage == 4){
+				playerHealth = respawnHP;
+				game.state.start('Stage4');
+			}
+		}
+		if(game.input.keyboard.justPressed(Phaser.Keyboard.SHIFT)){
+			game.state.start('Title');
 		}
 	}
 }

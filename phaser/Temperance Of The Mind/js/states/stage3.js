@@ -4,6 +4,8 @@ var Stage3 = function(game) {};
 Stage3.prototype = {
 	create: function() {
 		// Initialize variables
+		currentStage = 3;
+		respawnHP = playerHealth;
 		inputEnabled = true;
 		platformSpeed = 170;
 		playerImmune = false;
@@ -242,12 +244,12 @@ Stage3.prototype = {
 		}
 		// check for player input
 		if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
-			player.body.velocity.x = -275;
+			player.body.velocity.x = -295;
 			player.animations.play('left');
 			this.facingRight = false;
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
-			player.body.velocity.x = 275;
+			player.body.velocity.x = 295;
 			player.animations.play('right');
 			this.facingRight = true;
 		}
