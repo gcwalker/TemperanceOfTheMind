@@ -172,7 +172,7 @@ Stage1.prototype = {
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
 		this.fireballs.start(false,10000,800,300);
 
-		this.Instructions = game.add.text(560, 460, 'Use the arrow keys to move left, right \nand to jump. \n\nYour inventory appears in the upper right \ncorner of the screen. \n\nMay the odds be in your favor!', {font: 'Press Start 2P', fontSize: '24px', fill: '#fff'});
+		this.Instructions = game.add.text(560, 460, 'Use the arrow keys to move left, right \nand to jump. \n\nYour inventory appears in the upper right \ncorner of the screen.', {font: 'Press Start 2P', fontSize: '24px', fill: '#fff'});
 		this.Instructions.anchor.set(0.5);
 		this.Instructions.align = 'center';
 
