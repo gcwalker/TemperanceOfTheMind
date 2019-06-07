@@ -7,8 +7,10 @@ Win.prototype = {
 		congrats.anchor.set(0.5);
 		var replayText = game.add.text(game.width/2, 400, 'Press SPACEBAR to Restart', {font: 'Helvetica', fontSize: '24px', fill: '#fff'});
 		replayText.anchor.set(0.5);
-		
-		music.stop();
+		var img = game.add.sprite(game.width/2,game.height/2,'winImg');
+		img.anchor.setTo(0.5);
+		img.scale.setTo(0.3);
+		//music.stop();
 		music = game.add.audio('win');
 		music.play();
 	},

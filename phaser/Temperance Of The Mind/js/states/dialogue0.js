@@ -7,14 +7,16 @@ Dialogue0.prototype = {
 		Text1.anchor.set(0.5);
 		Text1.align = 'center';
 
-		var Text2 = game.add.text(game.width/2, 450, 'The choice is yours, will you let your grievances\nget the best of you or will you tame them and\nestablish control over your thoughts once and for\nall? The answer lies in the battle ahead…', {font: 'Press Start 2P', fontSize: '20px', fill: '#fff'});
-		Text2.anchor.set(0.5);
-		Text2.align = 'center';
+		this.couch = game.add.sprite(game.width/2,515,'couch');
+		this.couch.anchor.setTo(0.5);
+		this.couch.animations.add('sleeping',[0,1,2,3,4],2,true);
+
 
 		var playText = game.add.text(game.width/2, 610, 'Press SPACEBAR to Start', {font: 'Press Start 2P', fontSize: '24px', fill: '#fff'});
 		playText.anchor.set(0.5);
 	},
 	update: function() {
+		this.couch.animations.play('sleeping');
 		// check for SPACEBAR input
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
 			game.sound.play('menusound');
