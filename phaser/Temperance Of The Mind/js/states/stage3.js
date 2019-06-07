@@ -30,6 +30,7 @@ Stage3.prototype = {
 		slashmiss = game.add.audio('slashmiss');
 		slashhit = game.add.audio('slashhit');
 		fireball = game.add.audio('fireball');
+		shield = game.add.audio('shield');
 
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -301,6 +302,7 @@ Stage3.prototype = {
 			this.timer.add(2000, this.playerImmunity, this);
 			this.timer.add(1000,this.moveHitbox,this);
 			this.timer.start();
+			shield.play();
 			if(this.facingRight == true){
 				player.animations.play('shieldright');
 				shieldBubble.x = player.x;
