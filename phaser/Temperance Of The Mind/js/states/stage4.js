@@ -22,9 +22,11 @@ Stage4.prototype = {
 		game.world.setBounds(0,0,5000,1600);
 
 		// Stage music
-		music = game.add.audio('sadnessbegin');
-		music.play();
-		music.onStop.add(this.beginLoop, this);
+		if(music.isPlaying == false){
+			music = game.add.audio('sadnessbegin');
+			music.play();
+			music.onStop.add(this.beginLoop, this);
+		}
 
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
@@ -98,6 +100,11 @@ Stage4.prototype = {
 		bounds.setAll('alpha', 0);
 
 		this.lava = game.add.tileSprite(0,1580,5000,1400,'water');
+
+		this.door = game.add.sprite(4900,663,'doorclosed');
+		this.door.anchor.set(0.5);
+		this.door.scale.set(0.25);
+		game.physics.enable(this.door, Phaser.Physics.ARCADE);
 
 		// initialize player sprite
 		player = game.add.sprite(100, 1463 ,'player', 'playerrun00');
@@ -240,10 +247,6 @@ Stage4.prototype = {
 		var heart = hearts.create(2870,1270,'heart');
 		heart.anchor.set(0.5);
 		heart.scale.set(0.5);
-		this.door = game.add.sprite(4900,663,'doorclosed');
-		this.door.anchor.set(0.5);
-		this.door.scale.set(0.25);
-		game.physics.enable(this.door, Phaser.Physics.ARCADE);
 
 		this.dooropen = game.add.sprite(-1000,-1000,'dooropen');
 		this.dooropen.anchor.set(0.5);

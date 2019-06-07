@@ -19,9 +19,12 @@ Stage3.prototype = {
 		game.world.setBounds(0,0,5000,800);
 
 		// Stage music
-		//music = game.add.audio('stage1');
-		//music.play();
-		//music.loopFull(0.3);
+		if(music.isPlaying == false){
+			music = game.add.audio('sadnessbegin');
+			music.play();
+			music.onStop.add(this.beginLoop, this);
+		}
+
 
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
@@ -199,6 +202,7 @@ Stage3.prototype = {
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
 		if(game.physics.arcade.collide(this.heart,player)){
 			//music.stop();
+			playerHealth++;
 			game.state.start('Stage4');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
@@ -338,5 +342,10 @@ Stage3.prototype = {
 	},
 	disableShield: function() {
 		this.shielding = false;
+	},
+	beginLoop: function() {
+		music = game.add.audio('sadnessloop');
+		music.play();
+		music.loopFull(1);
 	}
 };

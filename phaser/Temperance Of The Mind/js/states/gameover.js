@@ -15,6 +15,7 @@ GameOver.prototype = {
 	},
 	update: function() {
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
+			music.stop();
 			if(currentStage == 1)
 				game.state.start('Stage1');
 			if(currentStage == 2){

@@ -16,10 +16,11 @@ Stage2.prototype = {
 		game.world.setBounds(0,0,5000,800);
 
 		// Stage music
-		//music = game.add.audio('stage1');
-		//music.play();
-		//music.loopFull(0.3);
-
+		if(music.isPlaying == false){
+			music = game.add.audio('stage1');
+			music.play();
+			music.loopFull(0.3);
+		}
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
 		slashhit = game.add.audio('slashhit');
@@ -189,7 +190,8 @@ Stage2.prototype = {
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
 		if(game.physics.arcade.collide(this.heart,player)){
-			//music.stop();
+			music.stop();
+			playerHealth++;
 			game.state.start('Stage3');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
@@ -216,7 +218,7 @@ Stage2.prototype = {
 			swordText.fixedToCamera = true;
 		}
 
-		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
+		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false && player.animations.name != 'shieldright' && player.animations.name != 'shieldleft'){
 			fireball.play();
 			this.fireballs.getClosestTo(player).kill();
 			--playerHealth;
