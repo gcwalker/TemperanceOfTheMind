@@ -183,6 +183,9 @@ Stage2.prototype = {
 		this.heart.scale.set(0.5);
 		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
 
+		this.stage2text = game.add.text(560, 400, 'You’ve triumphed over the demon of vexation\n and now your mind is free from the\noverstimulated feeling of aggression and vice.\nYou’ve come to terms with your job loss and\nyou no longer resent your boss…', {font: 'Press Start 2P', fontSize: '20px', fill: '#fff'});
+		this.stage2text.anchor.set(0.5);
+		this.stage2text.align = 'center';
 
 	},
 	update: function() {
@@ -240,11 +243,13 @@ Stage2.prototype = {
 		}
 		// check for player input
 		if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
+			this.stage2text.destroy();
 			player.body.velocity.x = -295;
 			player.animations.play('left');
 			this.facingRight = false;
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
+			this.stage2text.destroy();
 			player.body.velocity.x = 295;
 			player.animations.play('right');
 			this.facingRight = true;
@@ -262,6 +267,7 @@ Stage2.prototype = {
 			}
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform && inputEnabled == true){ // Makes player jump if they are on the ground and press up key
+			this.stage2text.destroy();
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){

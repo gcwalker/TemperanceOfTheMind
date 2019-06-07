@@ -193,6 +193,9 @@ Stage3.prototype = {
 		this.heart.scale.set(0.5);
 		game.physics.enable(this.heart, Phaser.Physics.ARCADE);
 
+		this.stage3text = game.add.text(560, 400, 'But alas, there still remains another draining\nentity, the demon of melancholy. It has plagued\nyour psyche with desolation and despair, after\nit had creeped into your mind after your lover left\nyou. Will you let this woe consume you?', {font: 'Press Start 2P', fontSize: '20px', fill: '#fff'});
+		this.stage3text.anchor.set(0.5);
+		this.stage3text.align = 'center';
 
 	},
 	update: function() {
@@ -249,11 +252,13 @@ Stage3.prototype = {
 		}
 		// check for player input
 		if(inputEnabled == true && cursors.left.isDown){ // Moves player left when left arrow key is down and plays left walking animation
+			this.stage3text.destroy();
 			player.body.velocity.x = -295;
 			player.animations.play('left');
 			this.facingRight = false;
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
+			this.stage3text.destroy();
 			player.body.velocity.x = 295;
 			player.animations.play('right');
 			this.facingRight = true;
@@ -271,6 +276,7 @@ Stage3.prototype = {
 			}
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform && inputEnabled == true){ // Makes player jump if they are on the ground and press up key
+			this.stage3text.destroy();
 			player.body.velocity.y = -750;
 		}
 		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
