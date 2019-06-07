@@ -20,9 +20,9 @@ Stage4.prototype = {
 		game.world.setBounds(0,0,5000,1600);
 
 		// Stage music
-		//music = game.add.audio('stage1');
-		//music.play();
-		//music.loopFull(0.3);
+		music = game.add.audio('sadnessbegin');
+		music.play();
+		music.onStop.add(beginLoop(), this);
 
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
@@ -458,5 +458,10 @@ Stage4.prototype = {
 		heart.kill();
 		playerHealth++;
 		healthText.text = 'Health: ' + playerHealth;
+	},
+	beginLoop: function() {
+		music = game.add.audio('sadnessloop');
+		music.play();
+		music.fullLoop(1);
 	}
 };

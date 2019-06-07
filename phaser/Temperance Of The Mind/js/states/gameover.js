@@ -8,6 +8,10 @@ GameOver.prototype = {
 		var replayText = game.add.text(game.width/2, 615, ' Press SPACEBAR to restart level\nOR\nSHIFT to restart game', {font: 'Press Start 2P', fontSize: '16px', fill: '#fff'});
 		replayText.anchor.set(0.5);
 		replayText.align = 'center';
+
+		music.stop();
+		music = game.add.audio('lose');
+		music.play();
 	},
 	update: function() {
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
