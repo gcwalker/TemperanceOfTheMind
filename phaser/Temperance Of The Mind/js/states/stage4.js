@@ -22,7 +22,7 @@ Stage4.prototype = {
 		// Stage music
 		music = game.add.audio('sadnessbegin');
 		music.play();
-		music.onStop.add(beginLoop(), this);
+		music.onStop.add(this.beginLoop, this);
 
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
@@ -462,6 +462,6 @@ Stage4.prototype = {
 	beginLoop: function() {
 		music = game.add.audio('sadnessloop');
 		music.play();
-		music.fullLoop(1);
+		music.loopFull(1);
 	}
 };
