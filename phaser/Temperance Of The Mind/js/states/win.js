@@ -12,9 +12,10 @@ Win.prototype = {
 		var replayText = game.add.text(game.width/2, 650, 'Press SPACEBAR to Restart', {font: 'Press Start 2P', fontSize: '24px', fill: '#fff'});
 		replayText.anchor.set(0.5);
 
-		//music.stop();
+		music.stop();
 		music = game.add.audio('win');
 		music.play();
+		music.loopFull();
 	},
 	update: function() {
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {

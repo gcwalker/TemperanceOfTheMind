@@ -10,6 +10,11 @@ Title.prototype = {
 
 		var playText = game.add.text(game.width/2, 500, 'Press SPACEBAR to continue', {font: 'Press Start 2P', fontSize: '24px', fill: '#000'});
 		playText.anchor.set(0.5);
+
+		// Title music
+		music = game.add.audio('title');
+		music.play();
+		music.loopFull();
 	},
 	update: function() {
 		// check for SPACEBAR input

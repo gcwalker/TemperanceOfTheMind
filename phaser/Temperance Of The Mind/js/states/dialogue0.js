@@ -19,6 +19,7 @@ Dialogue0.prototype = {
 		this.couch.animations.play('sleeping');
 		// check for SPACEBAR input
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)) {
+			music.stop();
 			game.sound.play('menusound');
 			game.state.start('Stage1');
 		}
