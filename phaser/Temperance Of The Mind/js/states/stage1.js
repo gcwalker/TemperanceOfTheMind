@@ -51,28 +51,32 @@ Stage1.prototype = {
 		right.alpha = 0;
 		right.body.immovable = true;
 
+		// Spawn lava asset
 		this.lava = game.add.tileSprite(0,1380,4000,1400,'lava');
 
 		// initialize player sprite
 		player = game.add.sprite(100, 565 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
-		player.destroyed = false;
 
+		// initialize enemy sprite
 		this.enemy = game.add.sprite(1000, 565,'boss1');
 		this.enemy.anchor.set(0.5);
 		this.enemy.scale.setTo(1.7);
 
+		// Use an invisible hitbox to check sword collision
 		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
 		this.slashHitbox.scale.setTo(1.2, 0.5);
 		this.slashHitbox.alpha = 0;
+
 		// apply physics to game stuff
 		game.physics.enable(player, Phaser.Physics.ARCADE);
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 		game.physics.enable(this.slashHitbox, Phaser.Physics.ARCADE);
 		game.physics.enable(this.lava, Phaser.Physics.ARCADE);
 
+		// update player and enemy properties
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
 
@@ -81,7 +85,7 @@ Stage1.prototype = {
 		this.enemy.body.bounce.y = 0.2;
 		this.enemy.body.velocity.x = enemySpeed;
 
-		// add player animations
+		// add player and enemy animations
 		player.animations.add('right',[1,2,3,4],6,true);
 		player.animations.add('left',[5,6,7,8],6,true);
 		player.animations.add('slashright',[10,11,12],6,false);
@@ -91,9 +95,9 @@ Stage1.prototype = {
 
 		this.enemy.animations.add('right',[1,2,3,4],6,true);
 		this.enemy.animations.add('left',[5,6,7,8],6,true);
-		//player.animations.add('slashRight')
 		this.facingRight = true;
 
+		// Create cursor keys
 		cursors = game.input.keyboard.createCursorKeys(); 
 
 		// add platforms
@@ -147,7 +151,7 @@ Stage1.prototype = {
 
 		platforms.setAll('body.immovable', true);
 
-		// TEMP health text at top left of camera
+		// health text at top left of camera
 		healthText = game.add.text(16,16,'Health: 10',{fontSize: '32px', fill:'#facade'});
 		healthText.fixedToCamera = true;
 		game.camera.follow(player,1);
@@ -157,8 +161,10 @@ Stage1.prototype = {
 		this.sworditem.scale.setTo(0.5);
 		game.physics.enable(this.sworditem, Phaser.Physics.ARCADE);
 
+		// Sword tooltip
 		swordText = game.add.text(-10,16,'[SPACE]',{fontSize: '10px', fill:'#facade'});
 		
+		// Health pickup
 		this.heart = game.add.sprite(-100,0,'heart');
 		this.heart.anchor.set(0.5);
 		this.heart.scale.set(0.5);
@@ -174,6 +180,7 @@ Stage1.prototype = {
 		this.fireballs.area = new Phaser.Rectangle(this.enemy.x, this.enemy.y,50,10);
 		this.fireballs.start(false,10000,800,300);
 
+		// Instruction text
 		this.Instructions = game.add.text(560, 460, 'Use the arrow keys to move left, right \nand to jump. \n\nYour inventory appears in the upper right \ncorner of the screen.', {font: 'Press Start 2P', fontSize: '24px', fill: '#fff'});
 		this.Instructions.anchor.set(0.5);
 		this.Instructions.align = 'center';
@@ -181,10 +188,10 @@ Stage1.prototype = {
 	},
 	update: function() {
 
-		// Make player collide with platforms
+		// Make player and enemy collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
-		if(game.physics.arcade.collide(bounds, this.enemy)){
+		if(game.physics.arcade.collide(bounds, this.enemy)){  // Makes enemy walk left and right
 			this.flipEnemy(this.enemy);
 		}
 		if(enemySpeed > 0){
@@ -193,17 +200,16 @@ Stage1.prototype = {
 		else{
 			this.enemy.animations.play('left');
 		}
-		if(game.physics.arcade.collide(this.heart,player)){
+		if(game.physics.arcade.collide(this.heart,player)){  // Start next state if player picks up heart
 			playerHealth++;
-			//music.stop();
 			game.state.start('Stage2');
 		}
-		if(game.physics.arcade.collide(this.lava,player)){
+		if(game.physics.arcade.collide(this.lava,player)){  // Player dies falling into lava
 			fireball.play();
 			music.stop();
 			game.state.start('GameOver');
 		}
-		this.fireballs.x = this.enemy.x;
+		this.fireballs.x = this.enemy.x;	// Fireballs spawn from boss position,
 		this.fireballs.y = this.enemy.y;
 
 		// Player pickup sword
@@ -218,6 +224,7 @@ Stage1.prototype = {
 			itemget.play();
 		}
 
+		// Player loses health on collision with fireball
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
 			fireball.play();
 			this.fireballs.getClosestTo(player).kill();
@@ -226,7 +233,6 @@ Stage1.prototype = {
 				music.stop();
 				game.state.start('GameOver');
 			}
-
 			healthText.text = 'Health: ' + playerHealth;
 			playerImmune = true;
 			inputEnabled = false;
@@ -261,7 +267,6 @@ Stage1.prototype = {
 			player.body.velocity.x = -295;
 			player.animations.play('left');
 			this.facingRight = false;
-			//player.animations.play('left');
 		}
 		else if(inputEnabled == true && cursors.right.isDown){ // Moves player right when right arrow key is down and plays right walking animation
 			this.Instructions.destroy();
@@ -269,31 +274,28 @@ Stage1.prototype = {
 			player.animations.play('right');
 			this.facingRight = true;
 		}
-		else if(player.animations.name == 'slashright' | player.animations.name == 'slashleft'){
-			player.body.velocity.x = 0;
+		else if(player.animations.name == 'slashright' | player.animations.name == 'slashleft'){  
+			player.body.velocity.x = 0;		// Stop player from moving during sword slash
 		}
 		else{ // Stops animation if player is not moving
-			//player.animations.stop();
 			player.body.velocity.x = 0;
 			if(this.facingRight == true){
 				player.animations.play('standingright');
-				//player.animations.stop();
 			}
 			if(this.facingRight == false){
 				player.animations.play('standingleft');
-				//player.animations.stop();
 			}
 		}
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform){ // Makes player jump if they are on the ground and press up key
 			this.Instructions.destroy();
 			player.body.velocity.y = -750;
 		}
-		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
+		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){ // Sword slash with spacebar
 			inputEnabled = false;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(500, this.disableInput, this);
-			this.timer.add(2000, this.enemyImmunity, this);
-			this.timer.add(300,this.moveHitbox,this);
+			this.timer.add(500, this.disableInput, this);	// Disable player input for .5 sec
+			this.timer.add(2000, this.enemyImmunity, this); // Make enemy immune for 2 sec
+			this.timer.add(300,this.moveHitbox,this);	// Move sword hitbox after .3 sec
 			this.timer.start();
 			slashmiss.play();
 			if(this.facingRight == true){
@@ -307,12 +309,12 @@ Stage1.prototype = {
 				this.slashHitbox.y = player.y;
 			}
 		}
-		if(game.physics.arcade.overlap(this.slashHitbox,this.enemy) && enemyImmune == false){
+		if(game.physics.arcade.overlap(this.slashHitbox,this.enemy) && enemyImmune == false){ // Enemy take damage on collision with sword hitbox
 			--this.enemyHealth;
 			this.enemy.body.velocity.y = -200;
 			enemyImmune = true;
 			this.timer = game.time.create(1000,true);
-			this.timer.add(2000, this.enemyImmunity, this);
+			this.timer.add(2000, this.enemyImmunity, this);		// Make enemy immune for 2 sec
 			this.timer.start();
 			slashhit.play();
 			this.flipEnemy(this.enemy);
@@ -325,30 +327,22 @@ Stage1.prototype = {
 				this.fireballs.setXSpeed(-125,125);
 				this.fireballs.frequency = 0;
 			}
-		}
-		
+		}	
 	},
-	render: function() {
-		//game.debug.spriteBounds(player);
-		//game.debug.spriteCorners(player, true,true);
-	},
-	flipEnemy: function(enemy) {
+	flipEnemy: function(enemy) { // Used to make enemy walk left and right
 		enemySpeed = enemySpeed * -1;
 		enemy.body.velocity.x = enemySpeed;
 	},
-	disableInput: function() {
+	disableInput: function() {  // Used to reenable player input
 		inputEnabled = true;
 	},
-	disableSlash: function() {
-		inputEnabled = false;
-	},
-	enemyImmunity: function() {
+	enemyImmunity: function() { // Used to disable enemy enemyImmunity
 		enemyImmune = false;
 	},
-	playerImmunity: function() {
+	playerImmunity: function() { // Disable player immunity
 		playerImmune = false;
 	},
-	moveHitbox: function() {
+	moveHitbox: function() {  // Reset sword hitbox
 		this.slashHitbox.x = 0;
 		this.slashHitbox.y = 0;
 	}

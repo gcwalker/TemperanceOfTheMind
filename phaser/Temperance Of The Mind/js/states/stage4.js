@@ -11,7 +11,6 @@ Stage4.prototype = {
 		enemySpeed = -200;
 		enemyImmune = false;
 		playerImmune = false;
-		slashing = false;
 		swordEquipped = true;
 		shieldEquipped = true;
 		this.enemyHealth = 5;
@@ -102,14 +101,10 @@ Stage4.prototype = {
 		bounds.setAll('body.immovable', true);
 		bounds.setAll('alpha', 0);
 
-		this.lava = game.add.tileSprite(0,1580,5000,1400,'water');
+		// Add water tilesprite
+		this.water = game.add.tileSprite(0,1580,5000,1400,'water');
 
-		this.door = game.add.sprite(4900,663,'doorclosed');
-		this.door.anchor.set(0.5);
-		this.door.scale.set(0.25);
-		game.physics.enable(this.door, Phaser.Physics.ARCADE);
-
-		// initialize player sprite
+		// initialize player and enemy sprite
 		player = game.add.sprite(100, 1463 ,'player', 'playerrun00');
 		player.anchor.set(0.5);
 		player.scale.setTo(1.5);
@@ -119,16 +114,19 @@ Stage4.prototype = {
 		this.enemy.anchor.set(0.5);
 		this.enemy.scale.setTo(1.7);
 
+		// Use invisible hitbox to check sword collision
 		this.slashHitbox = game.add.sprite(0,0,'sword');
 		this.slashHitbox.anchor.setTo(0,0.5);
 		this.slashHitbox.scale.setTo(1.2, 0.5);
 		this.slashHitbox.alpha = 0;
+
 		// apply physics to game stuff
 		game.physics.enable(player, Phaser.Physics.ARCADE);
 		game.physics.enable(this.slashHitbox, Phaser.Physics.ARCADE);
 		game.physics.enable(this.enemy, Phaser.Physics.ARCADE);
-		game.physics.enable(this.lava, Phaser.Physics.ARCADE);
+		game.physics.enable(this.water, Phaser.Physics.ARCADE);
 
+		// Update player and enemy properties
 		player.body.collideWorldBounds = true;
 		player.body.gravity.y = 1000;
 
@@ -137,7 +135,7 @@ Stage4.prototype = {
 		this.enemy.body.bounce.y = 0.2;
 		this.enemy.body.velocity.x = enemySpeed;
 
-		// add player animations
+		// add player and enemy animations
 		player.animations.add('right',[1,2,3,4],6,true);
 		player.animations.add('left',[5,6,7,8],6,true);
 		player.animations.add('slashright',[10,11,12],6,false);
@@ -152,6 +150,7 @@ Stage4.prototype = {
 
 		this.facingRight = true;
 
+		// Add cursor keys
 		cursors = game.input.keyboard.createCursorKeys(); 
 
 		// add platforms
@@ -162,11 +161,7 @@ Stage4.prototype = {
 		ground.scale.setTo(0.5, 0.8);
 		var ground = platforms.create(4700,736, 'ground01');
 		ground.scale.setTo(0.5, 0.8);  
-		//var groundR = platforms.create(3300,1336, 'ground01');
-		//groundR.scale.setTo(0.9, 1); 
-		//var ground0 = platforms.create(0,1336, 'ground01');
-		//ground0.scale.setTo(3.8, 1); // Resize scale to fit the width of the game
-		
+	
 		//Moving platforms
 		//Platform1
 		var platformMoving = platforms.create(900, 1350, 'platform01');
@@ -207,12 +202,12 @@ Stage4.prototype = {
 
 		platforms.setAll('body.immovable', true);
 
-		// TEMP health text at top left of camera
+		// health text at top left of camera
 		healthText = game.add.text(16,16,'Health: '+playerHealth,{fontSize: '32px', fill:'#facade'});
 		healthText.fixedToCamera = true;
 		game.camera.follow(player,1);
 
-		// Adds sword to game world
+		// Adds sword and shield to game world
 		this.sworditem = game.add.sprite(60,1045,'sword');
 		this.sworditem.scale.setTo(0.5);
 
@@ -220,9 +215,11 @@ Stage4.prototype = {
 		this.shielditem.scale.setTo(0.5);
 		game.physics.enable(this.shielditem, Phaser.Physics.ARCADE);
 
+		// Item tooltips
 		swordText = game.add.text(-10,16,'[SPACE]',{fontSize: '10px', fill:'#facade'});
 		shieldText = game.add.text(-10,16,'[SHIFT]',{fontSize: '10px', fill:'#facade'});
 
+		// Bubble around player when shielding
 		shieldBubble = game.add.sprite(-100,-100,'bubble');
 		shieldBubble.scale.set(1.7);
 		shieldBubble.alpha = 0.5;
@@ -233,12 +230,12 @@ Stage4.prototype = {
 		this.teardrops.makeParticles('teardrop',0,500,true,false);
 		this.teardrops.setYSpeed(500,750);
 		this.teardrops.scale.set(0.5);
-		//this.teardrops.setXSpeed(-150,150);
 		this.teardrops.setRotation(0,0);
 		this.teardrops.gravity = 100;
 		this.teardrops.area = new Phaser.Rectangle(1000, 10,8000,1);
 		this.teardrops.start(false,8000,250,1000);
 
+		// Heart pickups
 		hearts = game.add.group();
 		hearts.enableBody = true;
 		var heart = hearts.create(3070,1270,'heart');
@@ -251,6 +248,13 @@ Stage4.prototype = {
 		heart.anchor.set(0.5);
 		heart.scale.set(0.5);
 
+		// Add door sprite
+		this.door = game.add.sprite(4900,663,'doorclosed');
+		this.door.anchor.set(0.5);
+		this.door.scale.set(0.25);
+		game.physics.enable(this.door, Phaser.Physics.ARCADE);
+
+		// Add open door sprite
 		this.dooropen = game.add.sprite(-1000,-1000,'dooropen');
 		this.dooropen.anchor.set(0.5);
 		this.dooropen.scale.set(0.25);
@@ -258,8 +262,8 @@ Stage4.prototype = {
 
 	},
 	update: function() {
-
-		this.lava.tilePosition.x -= 2;
+		// Make water move
+		this.water.tilePosition.x -= 2;
 		// Make player collide with platforms
 		var hitPlatform = game.physics.arcade.collide(player, platforms);
 		var enemyHitPlatform = game.physics.arcade.collide(this.enemy, platforms);
@@ -272,15 +276,14 @@ Stage4.prototype = {
 		else{
 			this.enemy.animations.play('left');
 		}
-		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this);
-		game.physics.arcade.collide(player,hearts,this.collectHeart,null,this);
-
-		if(game.physics.arcade.collide(this.lava,player)){
+		game.physics.arcade.collide(bounds, platforms,this.flipPlatform,null,this); // Flip playforms on bounds collision
+		game.physics.arcade.collide(player,hearts,this.collectHeart,null,this); // Add health on heart collision
+		if(game.physics.arcade.collide(this.water,player)){ // Player dies if they fall in water
 			water.play();
 			music.stop();
 			game.state.start('GameOver');
 		}
-		// Player pickup shield
+		// Player inventory
 		if(shieldEquipped == true){
 			this.shielditem.x = 950;
 			this.shielditem.y = 20;
@@ -297,7 +300,7 @@ Stage4.prototype = {
 			swordText.y = 79;
 			swordText.fixedToCamera = true;
 		}
-
+		// Player loses health on collision with teardrop
 		if(game.physics.arcade.overlap(player, this.teardrops) && playerImmune == false && player.animations.name != 'shieldright' && player.animations.name != 'shieldleft'){
 			water.play();
 			--playerHealth;
@@ -305,7 +308,6 @@ Stage4.prototype = {
 				music.stop();
 				game.state.start('GameOver');
 			}
-
 			healthText.text = 'Health: ' + playerHealth;
 			playerImmune = true;
 			inputEnabled = false;
@@ -316,7 +318,7 @@ Stage4.prototype = {
 			this.timer.add(1500, this.playerImmunity, this);
 			this.timer.start();	
 		}
-		
+		// Knockback player if they touch the boss or reverse boss if the player is shielding
 		if(game.physics.arcade.overlap(player, this.enemy) && enemyImmune == false){
 			if(player.animations.name == 'shieldright' | player.animations.name == 'shieldleft')
 				this.flipEnemy(this.enemy); 
@@ -363,7 +365,7 @@ Stage4.prototype = {
 		if(cursors.up.isDown && player.body.touching.down && hitPlatform && inputEnabled == true){ // Makes player jump if they are on the ground and press up key
 			player.body.velocity.y = -750;
 		}
-		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){
+		if(hitPlatform && inputEnabled == true && swordEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR)){ // Player slash with spacebar
 			inputEnabled = false;
 			this.timer = game.time.create(1000,true);
 			this.timer.add(500, this.disableInput, this);
@@ -382,7 +384,7 @@ Stage4.prototype = {
 				this.slashHitbox.y = player.y;
 			}
 		}
-		if(hitPlatform && inputEnabled == true && shieldEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SHIFT)){
+		if(hitPlatform && inputEnabled == true && shieldEquipped == true && game.input.keyboard.justPressed(Phaser.Keyboard.SHIFT)){ // player shield with shift
 			this.shielding = true;
 			inputEnabled = false;
 			playerImmune = true;
@@ -408,7 +410,7 @@ Stage4.prototype = {
 			shieldBubble.y = player.y;
 			shieldBubble.x = player.x;			
 		}
-		if(game.physics.arcade.overlap(this.slashHitbox,this.enemy) && enemyImmune == false){
+		if(game.physics.arcade.overlap(this.slashHitbox,this.enemy) && enemyImmune == false){ // Enemy takes damage on collision with sword hitbox
 			--this.enemyHealth;
 			this.enemy.body.velocity.y = -200;
 			enemyImmune = true;
@@ -425,46 +427,42 @@ Stage4.prototype = {
 				this.teardrops.lifespan = 1;
 				this.door.x = -100;
 				this.door.y = -100;
-				this.dooropen.x = 4900;
+				this.dooropen.x = 4900;  // Replaces door asset with door open asset on boss death
 				this.dooropen.y = 680;
 			}
 		}
-		if(game.physics.arcade.collide(this.dooropen,player)){
+		if(game.physics.arcade.collide(this.dooropen,player)){ // Player wins when colliding with open door
 			music.stop();
 			game.state.start('Win');
 		}
 	},
-	render: function() {
-		//game.debug.spriteBounds(player);
-		//game.debug.spriteCorners(player, true,true);
-	},
-	flipEnemy: function(enemy) {
+	flipEnemy: function(enemy) {  // Make enemy move left and right
 		enemySpeed = enemySpeed * -1;
 		enemy.body.velocity.x = enemySpeed;
 	},
-	flipPlatform: function(bounds, platformMoving) {
+	flipPlatform: function(bounds, platformMoving) { // Make platforms move left and right
 		platformMoving.body.velocity.x = platformMoving.body.velocity.x * -1; 
 		platformMoving.body.velocity.y = platformMoving.body.velocity.y * -1; 
 	},
-	disableInput: function() {
+	disableInput: function() {// Used to reenable player input
 		inputEnabled = true;
 	},
-	enemyImmunity: function() {
+	enemyImmunity: function() { // Used to disable enemy enemyImmunity
 		enemyImmune = false;
 	},
-	playerImmunity: function() {
+	playerImmunity: function() { // Disable player immunity
 		playerImmune = false;
 	},
-	moveHitbox: function() {
+	moveHitbox: function() { // Reset sword and shield bubble 
 		this.slashHitbox.x = 0;
 		this.slashHitbox.y = 0;
 		shieldBubble.x = -100;
 		shieldBubble.y = -100;
 	},
-	disableShield: function() {
+	disableShield: function() { // boolean shielding
 		this.shielding = false;
 	},
-	collectHeart: function(player,heart) {
+	collectHeart: function(player,heart) { // Player pickup heart
 		heart.kill();
 		itemget.play();
 		playerHealth++;
