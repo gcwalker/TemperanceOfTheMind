@@ -29,7 +29,7 @@ Stage3.prototype = {
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
 		slashhit = game.add.audio('slashhit');
-		fireball = game.add.audio('fireball');
+		water = game.add.audio('water');
 		shield = game.add.audio('shield');
 
 		// spin up physics
@@ -210,7 +210,7 @@ Stage3.prototype = {
 			game.state.start('Stage4');
 		}
 		if(game.physics.arcade.collide(this.lava,player)){
-			fireball.play();
+			water.play();
 			music.stop();
 			game.state.start('GameOver');
 		}
@@ -233,7 +233,7 @@ Stage3.prototype = {
 		}
 
 		if(game.physics.arcade.overlap(player, this.teardrops) && playerImmune == false && player.animations.name != 'shieldright' && player.animations.name != 'shieldleft'){
-			fireball.play();
+			water.play();
 			--playerHealth;
 			if(playerHealth == 0){
 				music.stop();

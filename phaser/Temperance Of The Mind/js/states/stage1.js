@@ -23,12 +23,14 @@ Stage1.prototype = {
 		// Stage music
 		music = game.add.audio('stage1');
 		music.play();
-		music.loopFull(0.3);
+		music.loopFull(0.75);
 
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
 		slashhit = game.add.audio('slashhit');
+		itemget = game.add.audio('itemget');
 		fireball = game.add.audio('fireball');
+		enemydeath = game.add.audio('enemydeath');
 
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -213,6 +215,7 @@ Stage1.prototype = {
 			swordText.x = 1029;
 			swordText.y = 79;
 			swordText.fixedToCamera = true;
+			itemget.play();
 		}
 
 		if(game.physics.arcade.overlap(player, this.fireballs) && playerImmune == false){
@@ -318,6 +321,7 @@ Stage1.prototype = {
 				this.heart.x = this.enemy.x;
 				this.heart.y = this.enemy.y + 25;
 				this.enemy.kill();
+				enemydeath.play();
 				this.fireballs.setXSpeed(-125,125);
 				this.fireballs.frequency = 0;
 			}

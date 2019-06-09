@@ -31,8 +31,10 @@ Stage4.prototype = {
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
 		slashhit = game.add.audio('slashhit');
-		fireball = game.add.audio('fireball');
+		itemget = game.add.audio('itemget');
+		water = game.add.audio('water');
 		shield = game.add.audio('shield');
+		enemydeath = game.add.audio('enemydeath');
 
 		// spin up physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -274,7 +276,7 @@ Stage4.prototype = {
 		game.physics.arcade.collide(player,hearts,this.collectHeart,null,this);
 
 		if(game.physics.arcade.collide(this.lava,player)){
-			fireball.play();
+			water.play();
 			music.stop();
 			game.state.start('GameOver');
 		}
@@ -297,7 +299,7 @@ Stage4.prototype = {
 		}
 
 		if(game.physics.arcade.overlap(player, this.teardrops) && playerImmune == false && player.animations.name != 'shieldright' && player.animations.name != 'shieldleft'){
-			fireball.play();
+			water.play();
 			--playerHealth;
 			if(playerHealth == 0){
 				music.stop();
@@ -419,6 +421,7 @@ Stage4.prototype = {
 			if(this.enemyHealth == 0){
 				this.enemyAlive = false;
 				this.enemy.kill();
+				enemydeath.play();
 				this.teardrops.lifespan = 1;
 				this.door.x = -100;
 				this.door.y = -100;
@@ -463,6 +466,7 @@ Stage4.prototype = {
 	},
 	collectHeart: function(player,heart) {
 		heart.kill();
+		itemget.play();
 		playerHealth++;
 		healthText.text = 'Health: ' + playerHealth;
 	},

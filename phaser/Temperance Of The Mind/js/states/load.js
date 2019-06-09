@@ -41,8 +41,11 @@ Load.prototype = {
 		game.load.audio('lose', 'assets/audio/lose.mp3');
 		game.load.audio('slashmiss', 'assets/audio/slashmiss.mp3');
 		game.load.audio('slashhit', 'assets/audio/slashhit.mp3');
+		game.load.audio('itemget', 'assets/audio/itemget.mp3');
 		game.load.audio('fireball', 'assets/audio/fireball.mp3');
+		game.load.audio('water', 'assets/audio/water.mp3');
 		game.load.audio('shield', 'assets/audio/shield.mp3');
+		game.load.audio('enemydeath', 'assets/audio/enemydeath.mp3');
 	},
 	create: function() {
 		game.state.start('Title');

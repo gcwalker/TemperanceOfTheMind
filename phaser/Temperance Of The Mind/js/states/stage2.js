@@ -24,6 +24,7 @@ Stage2.prototype = {
 		// Stage Sound Effects
 		slashmiss = game.add.audio('slashmiss');
 		slashhit = game.add.audio('slashhit');
+		itemget = game.add.audio('itemget');
 		fireball = game.add.audio('fireball');
 		shield = game.add.audio('shield');
 
@@ -212,6 +213,7 @@ Stage2.prototype = {
 			shieldText.x = 959;
 			shieldText.y = 79;
 			shieldText.fixedToCamera = true;
+			itemget.play();
 		}
 		if(swordEquipped == true){
 			this.sworditem.x = 1020;
